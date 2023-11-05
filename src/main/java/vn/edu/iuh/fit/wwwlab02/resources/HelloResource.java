@@ -1,4 +1,4 @@
-package vn.edu.iuh.fit.wwwlab02;
+package vn.edu.iuh.fit.wwwlab02.resources;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
