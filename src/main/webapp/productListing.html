@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer List</title>
+</head>
+<body>
+<table width="80%" align="center">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>description</th>
+        <th>unit</th>
+        <th>manufacturer</th>
+        <th>status</th>
+        <th>Actions</th>
+    </tr>
+    <tbody id="productList">
+    </tbody>
+</table>
+
+<script>
+    // Gọi API để lấy danh sách khách hàng
+    fetch('http://localhost:8080/api/products/all')
+        .then(response => response.json())
+        .then(data => {
+            const productList = document.getElementById('productList');
+            data.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${product.product_id}</td>
+                        <td>${product.name}</td>
+                        <td>${product.description}</td>
+                        <td>${product.unit}</td>
+                        <td>${product.manufacturer}</td>
+                                                <td>${product.status}</td>
+
+                        <td>
+                            <a href="">Update</a>
+                            <a href="">Delete</a>
+                        </td>
+                    `;
+                productList.appendChild(row);
+            });
+        });
+</script>
+</body>
+</html>

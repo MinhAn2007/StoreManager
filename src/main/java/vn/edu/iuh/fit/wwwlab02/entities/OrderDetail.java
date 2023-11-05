@@ -1,6 +1,7 @@
 package vn.edu.iuh.fit.wwwlab02.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import vn.edu.iuh.fit.wwwlab02.pks.OrderDetailPK;
 
@@ -18,9 +19,11 @@ public class OrderDetail {
     @Id
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
     @Id
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     @ManyToOne
     private Product product;
 

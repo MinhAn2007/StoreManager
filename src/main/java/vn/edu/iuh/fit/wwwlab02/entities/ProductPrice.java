@@ -1,5 +1,6 @@
 package vn.edu.iuh.fit.wwwlab02.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import vn.edu.iuh.fit.wwwlab02.pks.ProductPricePK;
 
@@ -11,6 +12,8 @@ import java.time.LocalDateTime;
 public class ProductPrice {
     @Id
     @JoinColumn(name = "product_id")
+    @JsonIgnore
+
     @ManyToOne
     private Product product;
     @Id

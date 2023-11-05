@@ -1,5 +1,6 @@
 package vn.edu.iuh.fit.wwwlab02.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +18,8 @@ public class ProductImage {
     private String alternative;
 
     @ManyToOne
+    @JsonIgnore
+
     @JoinColumn(name = "product_id")
     private Product product;
 

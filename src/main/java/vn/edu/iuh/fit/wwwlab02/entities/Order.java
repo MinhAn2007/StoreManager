@@ -1,6 +1,7 @@
 package vn.edu.iuh.fit.wwwlab02.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,10 +20,14 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
+    @JsonIgnore // Sử dụng @JsonIgnore để ngăn ánh xạ vô hạn
+
     private Employee employee;
 
     @ManyToOne
     @JoinColumn(name = "cust_id")
+    @JsonIgnore // Sử dụng @JsonIgnore để ngăn ánh xạ vô hạn
+
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
