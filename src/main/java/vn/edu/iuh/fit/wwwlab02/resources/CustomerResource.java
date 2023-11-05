@@ -20,51 +20,52 @@ public class CustomerResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response insert(Customer customer) {
-        customerService.insertCustomer(customer);
+        customerService.insertCust(customer);
         return Response.ok(customer).build();
     }
 
-    @PUT
-    @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") long id, Customer customer) {
-        Customer cus = customerService.finCustomer(id).get();
-        if (cus == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        boolean update = customerService.updateCustomer(customer);
-        if (!update)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(customer).build();
-    }
-
+//    @PUT
+//    @Path("/{id}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response update(@PathParam("id") long id, Customer customer) {
+//        Customer cus = customerService.finCustomer(id).get();
+//        if (cus == null)
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        boolean update = customerService.updateCustomer(customer);
+//        if (!update)
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        return Response.ok(customer).build();
+//    }
+//
+//    @GET
+//    @Path("/{id}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response findByID(@PathParam("id") long id) {
+//        Customer customer = customerService.finCustomer(id).get();
+//        if (customer == null)
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        return Response.ok(customer).build();
+//    }
+//
     @GET
-    @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findByID(@PathParam("id") long id) {
-        Customer customer = customerService.finCustomer(id).get();
-        if (customer == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(customer).build();
-    }
-
-    @GET
+    @Path("/all")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        List<Customer> list = customerService.getAllCusTomer();
+        List<Customer> list = customerService.getAll();
         return Response.ok(list).build();
     }
-
-    @DELETE
-    @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam("id") long id) {
-        boolean delete = customerService.deleteCustomer(id);
-        if (!delete)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(id).build();
-    }
+//
+//    @DELETE
+//    @Path("/{id}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response delete(@PathParam("id") long id) {
+//        boolean delete = customerService.deleteCustomer(id);
+//        if (!delete)
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        return Response.ok(id).build();
+//    }
 }

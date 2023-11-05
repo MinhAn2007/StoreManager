@@ -1,22 +1,22 @@
 package vn.edu.iuh.fit.wwwlab02.repositories;
 
 import jakarta.persistence.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.iuh.fit.wwwlab02.entities.ProductPrice;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 public class ProductPriceRepository {
     private EntityManager em;
     private EntityManagerFactory emf;
     private EntityTransaction trans;
-    private Logger logger= (Logger) LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     public ProductPriceRepository() {
-        em= Persistence.createEntityManagerFactory("default").createEntityManager();
+        em = Persistence.createEntityManagerFactory("Lab_02").createEntityManager();
         trans=em.getTransaction();
     }
 

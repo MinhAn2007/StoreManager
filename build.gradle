@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.28'
     compileOnly('jakarta.platform:jakarta.jakartaee-web-api:10.0.0')
     compileOnly 'org.projectlombok:lombok:1.18.30'
+    implementation 'net.datafaker:datafaker:2.0.2'
 
     //for access DB
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'

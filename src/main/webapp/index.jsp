@@ -11,6 +11,9 @@
     <title>Title</title>
 </head>
 <body>
+    <a href="customerListing.jsp">List Customer</a>
+    <a href="EmployeeListing.jsp">List Employee</a>
+    <a href="productListing.jsp">List Employee</a>
 
 </body>
 </html>

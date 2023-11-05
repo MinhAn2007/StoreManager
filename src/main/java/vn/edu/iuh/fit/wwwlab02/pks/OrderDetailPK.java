@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class OrderDetailPK implements Serializable {
-    private Order order;
-    private Product product;
+    private Long order;
+    private Long product;
 }

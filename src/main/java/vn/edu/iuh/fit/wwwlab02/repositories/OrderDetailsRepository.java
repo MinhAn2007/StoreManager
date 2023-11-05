@@ -4,21 +4,21 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.iuh.fit.wwwlab02.entities.OrderDetail;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 public class OrderDetailsRepository {
     private EntityManager em;
     private EntityManagerFactory emf;
     private EntityTransaction trans;
-    private Logger logger = (Logger) LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     public OrderDetailsRepository() {
-        em = Persistence.createEntityManagerFactory("default").createEntityManager();
+        em = Persistence.createEntityManagerFactory("Lab_02").createEntityManager();
         trans = em.getTransaction();
     }
 

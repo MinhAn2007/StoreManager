@@ -1,23 +1,23 @@
 package vn.edu.iuh.fit.wwwlab02.repositories;
 
 import jakarta.persistence.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.iuh.fit.wwwlab02.entities.Employee;
 import vn.edu.iuh.fit.wwwlab02.enums.EmployeeStatus;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 public class EmployeeRepository {
     private EntityManager em;
     private EntityManagerFactory emf;
     private EntityTransaction trans;
-    private Logger logger = (Logger) LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 
     public EmployeeRepository() {
-        em = Persistence.createEntityManagerFactory("default").createEntityManager();
+        em = Persistence.createEntityManagerFactory("Lab_02").createEntityManager();
         trans = em.getTransaction();
     }
 
@@ -85,7 +85,7 @@ public class EmployeeRepository {
         return null;
     }
     public List<Employee> getActiveEmployee(){
-        try{
+       try{
             List<Employee> list=em.createQuery("Select e from Employee e where e.status=:status",Employee.class)
                     .setParameter("status",EmployeeStatus.ACTIVE)
                     .getResultList();

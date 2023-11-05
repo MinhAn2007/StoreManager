@@ -1,12 +1,12 @@
 package vn.edu.iuh.fit.wwwlab02.repositories;
 
 import jakarta.persistence.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.iuh.fit.wwwlab02.entities.Order;
 import vn.edu.iuh.fit.wwwlab02.entities.ProductImage;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.List;
 
 
@@ -14,10 +14,10 @@ public class ProductImageRepository {
     private EntityManager em;
     private EntityManagerFactory emf;
     private EntityTransaction trans;
-    private Logger logger= (Logger) LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     public ProductImageRepository() {
-        em= Persistence.createEntityManagerFactory("default").createEntityManager();
+        em = Persistence.createEntityManagerFactory("Lab_02").createEntityManager();
         trans=em.getTransaction();
     }
     public boolean insertProductImage(ProductImage productImage){
