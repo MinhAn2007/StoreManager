@@ -20,6 +20,10 @@ public class RootApplication extends Application {
         classes.add(CustomerResource.class); // Đăng ký resource của bạn
         classes.add(ProductResource.class); // Đăng ký resource của bạn
         classes.add(EmployeeResource.class); // Đăng ký resource của bạn
+        classes.add(OrderResource.class);
+        classes.add(OrderDetailResource.class);
+        classes.add(ProductImageResource.class);
+
 
         return classes;
     }

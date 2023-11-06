@@ -71,7 +71,7 @@ public class ProductImageRepository {
     public List<ProductImage> getAllProductImages() {
         try {
             trans.begin();
-            List<ProductImage> list = em.createNativeQuery("SELECT * from product_image ", Order.class).getResultList();
+            List<ProductImage> list = em.createNativeQuery("SELECT * from product_image ", ProductImage.class).getResultList();
             trans.commit();
             return list;
         } catch (Exception e) {
