@@ -69,10 +69,14 @@ public class ProductPriceRepository {
         return false;
     }
 
+    public List<ProductPrice> findByIdNotDate(Long id){
+        return em.createQuery("SELECT c FROM ProductPrice c WHERE c.product.product_id = :id ORDER BY c.product.product_id ASC", ProductPrice.class)
+                .setParameter("id", id)
+                .getResultList();    }
     public List<ProductPrice> getAllProductPrice() {
         try {
             trans.begin();
-            List<ProductPrice> list = em.createNativeQuery("SELECT * from product_price ", ProductPrice.class).getResultList();
+            List<ProductPrice> list = em.createQuery("SELECT c from ProductPrice c order by c.product.product_id ASC", ProductPrice.class).getResultList();
             trans.commit();
             return list;
         } catch (Exception e) {

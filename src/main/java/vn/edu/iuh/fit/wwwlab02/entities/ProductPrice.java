@@ -13,7 +13,6 @@ public class ProductPrice {
     @Id
     @JoinColumn(name = "product_id")
     @JsonIgnore
-
     @ManyToOne
     private Product product;
     @Id
@@ -23,15 +22,31 @@ public class ProductPrice {
     private double price;
     @Column(name = "note")
     private String note;
-
-    public ProductPrice() {
+    @Basic
+    @Column(name = "product_id", insertable = false, updatable = false)
+    private Long productId; // Thuộc tính productId
+    public ProductPrice(Long productId) {
+        this.productId = productId;
     }
 
-    public ProductPrice(Product product, LocalDateTime price_date_time, double price, String note) {
+    public ProductPrice() {
+
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public ProductPrice(Product product, LocalDateTime price_date_time, double price, String note, Long productId) {
         this.product = product;
         this.price_date_time = price_date_time;
         this.price = price;
         this.note = note;
+        this.productId = productId;
     }
 
     public Product getProduct() {
@@ -69,7 +84,7 @@ public class ProductPrice {
     @Override
     public String toString() {
         return "ProductPrice{" +
-                "product=" + product +
+                "product=" + product.getProduct_id() + product.getName()+
                 ", price_date_time=" + price_date_time +
                 ", price=" + price +
                 ", note='" + note + '\'' +

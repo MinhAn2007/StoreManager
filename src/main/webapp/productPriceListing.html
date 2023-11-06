@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ProductPrice List</title>
+</head>
+<body>
+<table width="80%" align="center">
+    <tr>
+        <th>DATE</th>
+        <th>ID</th>
+        <th>PRICE</th>
+        <th>NOTE</th>
+    </tr>
+    <tbody id="productPricesList">
+    </tbody>
+</table>
+
+<script>
+    function formatDateTime(dateTimeArray) {
+        const [year, month, day, hours, minutes] = dateTimeArray;
+        const formattedDate = `${day}-${month}-${year.toString().slice(2)}`;
+        const formattedTime = `${hours}:${minutes}`;
+        return `${formattedDate} ${formattedTime}`;
+    }
+    async function fetchEmployeeData() {
+        try {
+            const response = await fetch('http://localhost:8080/api/productPrices/all');
+            if (!response.ok) {
+                throw new Error('Failed to retrieve employee data');
+            }
+
+            const data = await response.json();
+            console.log(data)
+            const productPricesList = document.getElementById('productPricesList');
+            data.forEach(productPrices => {
+                const row = document.createElement('tr');
+                const dateTimeArray = productPrices.price_date_time;
+
+                row.innerHTML = `
+                        <td>${formatDateTime(dateTimeArray)}</td>
+                                                <td> ${productPrices.productId}</td>
+
+                        <td> ${productPrices.price}</td>
+                                                <td> ${productPrices.note}</td>
+
+                        <td>
+                            <a href="">Update</a>
+                            <a href="">Delete</a>
+                        </td>
+                    `;
+                productPricesList.appendChild(row);
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Gọi hàm để lấy dữ liệu
+    fetchEmployeeData();
+</script>
+</body>
+</html>

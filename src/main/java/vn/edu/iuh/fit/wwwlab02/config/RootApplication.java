@@ -23,7 +23,7 @@ public class RootApplication extends Application {
         classes.add(OrderResource.class);
         classes.add(OrderDetailResource.class);
         classes.add(ProductImageResource.class);
-
+        classes.add(ProductPriceResource.class);
 
         return classes;
     }
