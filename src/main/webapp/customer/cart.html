@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+</head>
+<body>
+<h1>Shopping Cart</h1>
+<ul id="cart">
+    <!-- Cart items will be displayed here -->
+</ul>
+<p>Total: $<span id="total">0.00</span></p>
+
+<script>
+    // Retrieve the cart data from local storage
+    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+    var total = 0;
+
+    // Display the cart items and calculate the total
+    var cartList = document.getElementById("cart");
+    var totalSpan = document.getElementById("total");
+    cart.forEach(function (item) {
+        var li = document.createElement("li");
+        li.innerText = item.name + " - $" + item.price;
+        cartList.appendChild(li);
+        total += parseFloat(item.price);
+    });
+    totalSpan.innerText = total;
+
+    // Clear the cart data in local storage
+    localStorage.removeItem('cart');
+</script>
+</body>
+</html>

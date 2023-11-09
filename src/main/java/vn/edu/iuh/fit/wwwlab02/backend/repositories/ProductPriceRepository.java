@@ -85,4 +85,24 @@ public class ProductPriceRepository {
         }
         return null;
     }
+    public Double findLatestProductPrice(long productId) {
+        String jpql = "SELECT pp.price " +
+                "FROM ProductPrice pp " +
+                "WHERE pp.product.product_id = :productId " +
+                "ORDER BY pp.price_date_time DESC";
+
+        TypedQuery<Double> query = em.createQuery(jpql, Double.class);
+        query.setParameter("productId", productId);
+        query.setMaxResults(1);  // Giới hạn kết quả chỉ trả về một giá
+
+        Double latestPrice = null;
+
+        try {
+            latestPrice = query.getSingleResult();
+        } catch (NoResultException e) {
+            // Xử lý khi không tìm thấy kết quả nếu cần
+        }
+
+        return latestPrice;
+    }
 }

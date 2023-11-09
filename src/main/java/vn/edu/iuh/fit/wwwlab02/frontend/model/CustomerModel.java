@@ -9,7 +9,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 
 public class CustomerModel {
-    private final String apiEndpoint = "http://localhost:8080/api/customers"; // Điều chỉnh URL của API theo cơ sở của bạn
+    private final String apiEndpoint = "http://localhost:8080/api/customers";
 
     public void insertCust(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String name = req.getParameter("name");

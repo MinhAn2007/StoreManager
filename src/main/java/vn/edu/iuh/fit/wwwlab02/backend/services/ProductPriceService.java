@@ -36,4 +36,8 @@ public class ProductPriceService {
     public List<ProductPrice> findByIdNotDate(Long id){
         return repo.findByIdNotDate(id);
     }
+
+    public Double findLatestProductPrice (Long id){
+        return repo.findLatestProductPrice(id);
+    }
 }

@@ -36,6 +36,18 @@ public class ProductPriceResource {
         return Response.ok(productPriceService.findByIdNotDate(id)).build();
     }
     @GET
+    @Path("/last/{id}")
+    public Response findLatestProductPrice(@PathParam("id") long id) {
+        // Kiểm tra xem giá sản phẩm có ngày gần nhất tồn tại hay không
+        Double latestPrice = productPriceService.findLatestProductPrice(id);
+        if (latestPrice == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        // Trả về giá sản phẩm có ngày gần nhất
+        return Response.ok(latestPrice).build();
+    }
+    @GET
     @Path("/{id}/{date}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

@@ -12,7 +12,7 @@
 </head>
 <body>
     <a href="admin/admin.jsp">ADMIN</a>
-    <a href="customer/customer.jsp">CUSTOMER</a>
+    <a href="customer/productList.html">CUSTOMER</a>
 
 </body>
 </html>

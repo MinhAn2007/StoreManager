@@ -32,4 +32,5 @@ public class ProductImageService {
     public List<ProductImage> getAllProductImages() {
         return repo.getAllProductImages();
     }
+
 }
