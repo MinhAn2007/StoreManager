@@ -4,13 +4,14 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
     <persistence-unit name="Lab_02">
-        <class>vn.edu.iuh.fit.wwwlab02.entities.Product</class>
-        <class>vn.edu.iuh.fit.wwwlab02.entities.Employee</class>
-        <class>vn.edu.iuh.fit.wwwlab02.entities.Order</class>
-        <class>vn.edu.iuh.fit.wwwlab02.entities.Customer</class>
-        <class>vn.edu.iuh.fit.wwwlab02.entities.ProductImage</class>
-        <class>vn.edu.iuh.fit.wwwlab02.entities.ProductPrice</class>
-        <class>vn.edu.iuh.fit.wwwlab02.entities.OrderDetail</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.entities.Product</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.entities.Employee</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.entities.Order</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.entities.Customer</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.entities.ProductImage</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.entities.ProductPrice</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail</class>
+        <class>vn.edu.iuh.fit.wwwlab02.dto.OrderDetailWithIds</class>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 

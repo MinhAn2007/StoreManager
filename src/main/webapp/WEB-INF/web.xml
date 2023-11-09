@@ -7,4 +7,5 @@
         <param-name>jakarta.ws.rs.Application</param-name>
         <param-value>your.package.YourApplication</param-value>
     </context-param>
+
 </web-app>

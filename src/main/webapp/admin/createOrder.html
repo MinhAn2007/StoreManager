@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Order</title>
+</head>
+<body>
+<h1>Create New Order</h1>
+<form id="orderForm" method="POST">
+    <label for="order_date">Order Date:</label>
+    <input type="text" id="order_date" name="order_date" required><br>
+
+    <label for="emp_id">Employee ID:</label>
+    <input type="text" id="emp_id" name="emp_id" required><br>
+
+    <label for "cust_id">Customer ID:</label>
+    <input type="text" id="cust_id" name="cust_id" required><br>
+
+    <h2>Order Details</h2>
+    <label for="product_id">Product ID:</label>
+    <input type="text" id="product_id" name="product_id" required><br>
+
+    <label for="quantity">Quantity:</label>
+    <input type="text" id="quantity" name="quantity" required><br>
+
+    <label for="price">Price:</label>
+    <input type="text" id="price" name="price" required><br>
+
+    <label for="note">Note:</label>
+    <input type="text" id="note" name="note"><br>
+
+    <input type="submit" value="Create Order">
+</form>
+
+<script>
+    document.getElementById('orderForm').addEventListener('submit', function (e) {
+
+       console.log("adđ");
+    });
+</script>
+</body>
+</html>

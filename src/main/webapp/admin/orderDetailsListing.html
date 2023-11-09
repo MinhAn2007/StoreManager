@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OrderDetails List</title>
+</head>
+<body>
+<table width="80%" align="center">
+    <tr>
+        <th>QUANTITY</th>
+        <th>PRICE</th>
+        <th>NOTE</th>
+        <th>OrderID</th>
+        <th>ProductId</th>
+        <th>ACTION</th>
+    </tr>
+    <tbody id="ordersDetails">
+    </tbody>
+</table>
+
+<script>
+    async function fetchOrderDetailsData() {
+        try {
+            const response = await fetch('http://localhost:8080/api/orderDetails/all');
+            if (!response.ok) {
+                throw new Error('Failed to retrieve order details data');
+            }
+
+            const data = await response.json();
+            const ordersDetailsList = document.getElementById('ordersDetails');
+            data.forEach(ordersDetails => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${ordersDetails.quantity}</td>
+                        <td>${ordersDetails.price}</td>
+                        <td>${ordersDetails.note}</td>
+                        <td>${ordersDetails.orderId}</td>
+                        <td>${ordersDetails.productId}</td>
+                        <td>
+                            <a href="">Update</a>
+                            <a href="">Delete</a>
+                        </td>
+                    `;
+                ordersDetailsList.appendChild(row);
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Gọi hàm để lấy dữ liệu
+    fetchOrderDetailsData();
+</script>
+</body>
+</html>
