@@ -1,7 +1,9 @@
 package vn.edu.iuh.fit.wwwlab02.backend.converts;
 
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import vn.edu.iuh.fit.wwwlab02.backend.enums.ProductStatus;
+@Converter(autoApply = true)
 
 public class ProductStatusConvert implements AttributeConverter<ProductStatus, Integer> {
 

@@ -11,7 +11,11 @@
         <class>vn.edu.iuh.fit.wwwlab02.backend.entities.ProductImage</class>
         <class>vn.edu.iuh.fit.wwwlab02.backend.entities.ProductPrice</class>
         <class>vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail</class>
-        <class>vn.edu.iuh.fit.wwwlab02.dto.OrderDetailWithIds</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.converts.ProductStatusConvert</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.enums.EmployeeStatus</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.enums.ProductStatus</class>
+        <class>vn.edu.iuh.fit.wwwlab02.backend.converts.EmployeeStatusConvert</class>
+
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 

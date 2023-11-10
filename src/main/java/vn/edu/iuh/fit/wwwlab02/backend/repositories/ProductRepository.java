@@ -75,7 +75,7 @@ public class ProductRepository {
     public List<Product> getAllProducts() {
         try {
             trans.begin();
-            List<Product> list = em.createNativeQuery("Select * from product order by name ", Product.class).getResultList();
+            List<Product> list = em.createNativeQuery("Select * from product order by product_id asc ", Product.class).getResultList();
             trans.commit();
             return list;
         } catch (Exception e) {
