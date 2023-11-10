@@ -11,44 +11,12 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
+        background-color: #f4f4f4;
     }
 
     h1 {
         text-align: center;
-    }
-
-    #productList {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        justify-content: center;
-    }
-
-    .product {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: center;
-    }
-
-    .product img {
-        max-width: 100%;
-        height: 200px;
-    }
-
-    .price {
-        font-weight: bold;
-        color: green;
-    }
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4; /* Set a background color for the body */
-    }
-
-    h1 {
-        text-align: center;
-        margin-top: 20px; /* Add some top margin to the heading */
+        margin-top: 20px;
     }
 
     #productList {
@@ -56,27 +24,27 @@
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 20px;
         justify-content: center;
-        margin: 20px; /* Add some margin around the product list */
+        margin: 20px;
     }
 
     .product {
         border: 1px solid #ccc;
         padding: 10px;
         text-align: center;
-        background-color: #fff; /* Set a background color for product items */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
-        transition: transform 0.3s ease; /* Add a smooth transition effect */
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
     }
 
     .product:hover {
-        transform: scale(1.05); /* Scale up the product on hover */
+        transform: scale(1.05);
     }
 
     .product img {
         max-width: 100%;
         height: 200px;
-        object-fit: cover; /* Maintain the aspect ratio of the image */
-        margin-bottom: 10px; /* Add some bottom margin to the image */
+        object-fit: cover;
+        margin-bottom: 10px;
     }
 
     .price {
@@ -85,7 +53,7 @@
     }
 
     button {
-        margin-top: 10px; /* Add some top margin to the buttons */
+        margin-top: 10px;
         cursor: pointer;
         background-color: #4caf50;
         color: #fff;
@@ -93,11 +61,12 @@
         padding: 10px;
         text-transform: uppercase;
         font-weight: bold;
-        transition: background-color 0.3s ease; /* Add a smooth transition effect to the button */
+        transition: background-color 0.3s ease;
     }
 
     button:hover {
-        background-color: #45a049; }
+        background-color: #45a049;
+    }
 
     canvas {
         display: block;
@@ -107,25 +76,79 @@
         border: 1px solid #ddd;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+
     #cart {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 50%;
+        margin-left: 50%;
     }
+
+    #search {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #search input {
+        padding: 8px;
+        margin-right: 5px;
+    }
+
+    #search button {
+        padding: 10px; /* Adjusted padding for a larger button */
+        cursor: pointer;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    #search button:hover {
+        background-color: #45a049;
+    }
+
+    #sortButtons {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #sortButtons button {
+        margin-right: 10px;
+    }
+
+
 </style>
 <h1>Product List</h1>
+<div  id="sortButtons">
+    <button onclick="sortProductsByPrice()">Sort ASC</button>
+    <button onclick="sortProductsByPriceDESC()">Sort DESC</button>
+</div>
+
+<div id="search">
+    <input type="text" id="searchInput" placeholder="Enter product name">
+    <button onclick="searchProducts()">Search</button>
+</div>
 <div id="productList">
 </div>
 <button  id="cart" onclick="cartS()">Cart</button>
 <script>
     var cart = [];
     var total = 0;
+    var productList = [];
+    var displayedProducts = [];
 
     function fetchProducts() {
         fetch("http://localhost:8080/api/products/all")
             .then(response => response.json())
-            .then(data => displayProducts(data))
+            .then(data => {
+                displayedProducts = data.map(product => ({ ...product, productDiv: null }));
+                productList = data;
+                displayProducts(displayedProducts);
+            })
             .catch(error => console.error("Error fetching products: " + error));
     }
 
@@ -146,11 +169,13 @@
     }
 
     function getSrc(id, productDiv) {
-        fetch(`http://localhost:8080/api/productImages/${id}`).then(response => response.json()).then(data => {
-            var src = data.path;
-            var imgElement = productDiv.querySelector("img");
-            imgElement.src = src;
-        })
+        fetch(`http://localhost:8080/api/productImages/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                var src = data.path;
+                var imgElement = productDiv.querySelector("img");
+                imgElement.src = src;
+            })
             .catch(error => console.error("Error fetching product image: " + error));
     }
 
@@ -161,6 +186,10 @@
 
     function displayProducts(products) {
         var productList = document.getElementById("productList");
+
+        // Clear existing content
+        productList.innerHTML = '';
+
         products.forEach(function (product, index) {
             var productDiv = document.createElement("div");
             productDiv.className = "product";
@@ -171,16 +200,18 @@
             <p>Description: ${product.description}</p>
             <p class="price"></p>
             <button onclick="addToCart('${product.name}', '${product.product_id}', ${index})">Add to Cart</button>
-<button onclick="showPriceChart('${canvasId}','${product.product_id}')">View Price Chart</button>
-
+            <button onclick="showPriceChart('${canvasId}','${product.product_id}')">View Price Chart</button>
         `;
 
             productList.appendChild(productDiv);
+
+            // Update the product object with the productDiv
+            displayedProducts[index].productDiv = productDiv;
+
             getPrice(product.product_id, productDiv, canvasId);
             getSrc(product.product_id, productDiv);
         });
     }
-
     function addToCart(productName, price, index) {
         const existingProduct = cart.find(item => item.name === productName);
 
@@ -200,6 +231,62 @@
 
     function showPriceChart(canvasId, productIdForChart) {
         window.location.href = `chart.html#${productIdForChart}`;
+    }
+
+    function getPriceForProduct(productId) {
+        const product = displayedProducts.find(p => p.product_id === productId);
+
+        if (product && product.productDiv) {
+            const priceElement = product.productDiv.querySelector(".price");
+
+            // Check if the product has a price and productDiv
+            if (priceElement) {
+                return parseFloat(priceElement.innerText.replace('$', ''));
+            } else {
+                return null;
+            }
+        }
+
+        return 0;
+    }
+
+    function sortProductsByPrice() {
+        displayedProducts.sort((a, b) => {
+            const aPrice = getPriceForProduct(a.product_id);
+            const bPrice = getPriceForProduct(b.product_id);
+
+            if (aPrice !== null && bPrice !== null) {
+                return aPrice - bPrice;
+            } else {
+                return aPrice !== null ? -1 : 1;
+            }
+        });
+
+        displayProducts(displayedProducts);
+    }
+    function sortProductsByPriceDESC() {
+        displayedProducts.sort((a, b) => {
+            const aPrice = getPriceForProduct(a.product_id);
+            const bPrice = getPriceForProduct(b.product_id);
+
+            if (aPrice !== null && bPrice !== null) {
+                return bPrice - aPrice;  // Reverse the order for descending sorting
+            } else {
+                return aPrice !== null ? 1 : -1;
+            }
+        });
+
+        displayProducts(displayedProducts);
+    }
+    function searchProducts() {
+        const searchInput = document.getElementById("searchInput");
+        const searchTerm = searchInput.value.toLowerCase();
+
+        const filteredProducts = displayedProducts.filter(product =>
+            product.name.toLowerCase().includes(searchTerm)
+        );
+
+        displayProducts(filteredProducts);
     }
     fetchProducts();
 </script>

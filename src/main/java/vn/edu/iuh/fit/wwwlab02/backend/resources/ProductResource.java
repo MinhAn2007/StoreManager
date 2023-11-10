@@ -20,7 +20,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        List<Product> list = productService.getAllProducts();
+        List<Product> list = productService.getActiveProduct();
         return Response.ok(list).build();
     }
 

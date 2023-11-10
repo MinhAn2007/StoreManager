@@ -86,6 +86,7 @@ public class ProductRepository {
     }
     public List<Product> getActiveProduct(){
         try{
+            trans.begin();
             List<Product> list=em.createQuery("Select p from Product p where p.status=:status",Product.class)
                     .setParameter("status", ProductStatus.ACTIVE)
                     .getResultList();
