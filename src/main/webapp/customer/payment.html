@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #paymentForm {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Payment</h1>
+<div id="paymentForm">
+    <div id="totalAmount">Total Amount: $<span id="displayTotal"></span></div>
+
+    <label for="cardNumber">Card Number:</label>
+    <input type="text" id="cardNumber" placeholder="Enter card number">
+
+    <label for="expiryDate">Expiry Date:</label>
+    <input type="text" id="expiryDate" placeholder="MM/YYYY">
+
+    <label for="cvv">CVV:</label>
+    <input type="text" id="cvv" placeholder="CVV">
+
+    <button onclick="processPayment()">Process Payment</button>
+</div>
+
+<script>
+    var total = localStorage.getItem('total') || 0;
+    document.getElementById("displayTotal").innerText = total;
+    function processPayment() {
+            var cardNumber = document.getElementById("cardNumber").value;
+            var expiryDate = document.getElementById("expiryDate").value;
+            var cvv = document.getElementById("cvv").value;
+
+            if (cardNumber === "" || expiryDate === "" || cvv === "") {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            alert("Payment processed successfully!");
+            window.location.href = 'productList.html';
+
+    }
+</script>
+</body>
+</html>

@@ -2,8 +2,11 @@
 <html>
 <head>
     <title>Product List</title>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script></head>
 <body>
 <style>
@@ -67,7 +70,20 @@
     button:hover {
         background-color: #45a049;
     }
-
+    #cart {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        font-size: 24px; /* Điều chỉnh kích thước của icon giỏ hàng */
+    }
     canvas {
         display: block;
         margin: auto;
@@ -134,7 +150,7 @@
 </div>
 <div id="productList">
 </div>
-<button  id="cart" onclick="cartS()">Cart</button>
+<button id="cart" onclick="cartS()"><i class="fas fa-shopping-cart"></i></button>
 <script>
     var cart = [];
     var total = 0;

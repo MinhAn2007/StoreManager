@@ -3,9 +3,11 @@ package vn.edu.iuh.fit.wwwlab02.backend.repositories;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductInfoDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 import vn.edu.iuh.fit.wwwlab02.backend.enums.ProductStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,5 +101,36 @@ public class ProductRepository {
         return null;
     }
 
+    public List<ProductInfoDTO> getActiveProductInfo() {
+        try {
+            trans.begin();
+            List<Product> list = em.createQuery("SELECT p FROM Product p JOIN FETCH p.productImageList ig JOIN FETCH p.productPrices pp WHERE p.status = :status order by pp.price_date_time desc ", Product.class)
+                    .setParameter("status", ProductStatus.ACTIVE)
+                    .getResultList();
+
+            List<ProductInfoDTO> productInfoDTOs = new ArrayList<>();
+
+            for (Product p : list) {
+                ProductInfoDTO productInfoDTO = new ProductInfoDTO();
+                productInfoDTO.setName(p.getName());
+                productInfoDTO.setProductId(p.getProduct_id());
+                productInfoDTO.setDescription(p.getDescription());
+                productInfoDTO.setUnit(p.getUnit());
+                productInfoDTO.setManufacturer(p.getManufacturer());
+                String imagePath = p.getProductImageList().get(0).getPath();
+                double price = p.getProductPrices().get(0).getPrice();
+                productInfoDTO.setPath(imagePath);
+                productInfoDTO.setPrice(price);
+                productInfoDTOs.add(productInfoDTO);
+            }
+
+            trans.commit();
+            return productInfoDTOs;
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            trans.rollback();
+            return null;
+        }
+    }
 
 }

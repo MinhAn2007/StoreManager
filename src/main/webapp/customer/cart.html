@@ -1,21 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #cart {
+            list-style: none;
+            padding: 0;
+        }
+
+        #cart li {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #total {
+            font-size: 18px;
+            font-weight: bold;
+            color: green;
+        }
+
+        #checkoutButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #checkoutButton:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 <h1>Shopping Cart</h1>
-<ul id="cart">
-    <!-- Cart items will be displayed here -->
-</ul>
+<ul id="cart"></ul>
 <p>Total: $<span id="total">0.00</span></p>
+<button id="checkoutButton" onclick="checkout()">Checkout</button>
 
 <script>
-    // Retrieve the cart data from local storage
     var cart = JSON.parse(localStorage.getItem('cart')) || [];
     var total = 0;
 
-    // Display the cart items and calculate the total
     var cartList = document.getElementById("cart");
     var totalSpan = document.getElementById("total");
     cart.forEach(function (item) {
@@ -25,9 +72,14 @@
         total += parseFloat(item.price);
     });
     totalSpan.innerText = total;
+    localStorage.setItem('total', total);
 
-    // Clear the cart data in local storage
     localStorage.removeItem('cart');
+
+    function checkout() {
+        alert("Thank you for your purchase! Redirecting to payment page...");
+        window.location.href = 'payment.html';
+    }
 </script>
 </body>
 </html>

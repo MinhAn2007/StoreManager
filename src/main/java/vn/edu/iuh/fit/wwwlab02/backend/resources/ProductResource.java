@@ -3,6 +3,7 @@ package vn.edu.iuh.fit.wwwlab02.backend.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductInfoDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.services.ProductService;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 
@@ -25,10 +26,11 @@ public class ProductResource {
     }
 
     @GET
+    @Path("/test")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getActive() {
-        List<Product> list = productService.getActiveProduct();
+        List<ProductInfoDTO> list = productService.getActiveProductInfo();
         return Response.ok(list).build();
     }
 

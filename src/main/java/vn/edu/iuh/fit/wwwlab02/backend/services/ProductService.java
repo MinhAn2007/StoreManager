@@ -1,5 +1,6 @@
 package vn.edu.iuh.fit.wwwlab02.backend.services;
 
+import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductInfoDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 import vn.edu.iuh.fit.wwwlab02.backend.repositories.ProductRepository;
 
@@ -29,8 +30,8 @@ public class ProductService {
         return repo.deleteProduct(id);
     }
 
-    public List<Product> getAllProducts() {
-        return repo.getAllProducts();
+    public List<ProductInfoDTO> getActiveProductInfo() {
+        return repo.getActiveProductInfo();
     }
     public List<Product> getActiveProduct(){return repo.getActiveProduct();}
 }
