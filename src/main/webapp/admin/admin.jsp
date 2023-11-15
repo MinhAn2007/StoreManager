@@ -50,7 +50,7 @@
     <li>
         <a href="#">LIST</a>
         <ul class="submenu">
-            <li><a href="customerListing.html">List Customer</a></li>
+            <li><a href="CustomerListing.html">List Customer</a></li>
             <li><a href="EmployeeListing.html">List Employee</a></li>
             <li><a href="productListing.html">List Product</a></li>
             <li><a href="ordersListing.html">List Orders</a></li>
