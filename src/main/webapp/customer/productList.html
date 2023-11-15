@@ -136,10 +136,9 @@
         margin-right: 10px;
     }
 
-
 </style>
 <h1>Product List</h1>
-<div  id="sortButtons">
+<div id="sortButtons">
     <button onclick="sortProductsByPrice()">Sort ASC</button>
     <button onclick="sortProductsByPriceDESC()">Sort DESC</button>
 </div>
@@ -158,7 +157,7 @@
     var displayedProducts = [];
 
     function fetchProducts() {
-        fetch("http://localhost:8080/api/products/all")
+        fetch("http://localhost:8080/api/products/active")
             .then(response => response.json())
             .then(data => {
                 displayedProducts = data.map(product => ({ ...product, productDiv: null }));
@@ -168,69 +167,58 @@
             .catch(error => console.error("Error fetching products: " + error));
     }
 
-    function getPrice(id, productDiv, productIdForChart) {
-        return new Promise((resolve, reject) => {
-            fetch(`http://localhost:8080/api/productPrices/last/${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    var price = parseFloat(data);
-                    displayPrice(price, productDiv);
-                    resolve({ price, productIdForChart });
-                })
-                .catch(error => {
-                    console.error("Error fetching product price: " + error);
-                    reject(error);
-                });
-        });
-    }
+    var cart = [];
+    var total = 0;
+    var productList = [];
+    var displayedProducts = [];
 
-    function getSrc(id, productDiv) {
-        fetch(`http://localhost:8080/api/productImages/${id}`)
+    function fetchProducts() {
+        fetch("http://localhost:8080/api/products/active")
             .then(response => response.json())
             .then(data => {
-                var src = data.path;
-                var imgElement = productDiv.querySelector("img");
-                imgElement.src = src;
+                productList = data;
+                displayedProducts = data.map(product => ({ ...product, productDiv: null }));
+                displayProducts(displayedProducts);
             })
-            .catch(error => console.error("Error fetching product image: " + error));
+            .catch(error => console.error("Error fetching products: " + error));
     }
 
-    function displayPrice(price, productDiv) {
-        var priceElement = productDiv.querySelector(".price");
-        priceElement.innerText = `$${price}`;
-    }
+    // Other functions...
+
+    fetchProducts();  // Call fetchProducts when the page loads
 
     function displayProducts(products) {
         var productList = document.getElementById("productList");
 
-        // Clear existing content
         productList.innerHTML = '';
 
         products.forEach(function (product, index) {
             var productDiv = document.createElement("div");
             productDiv.className = "product";
-            var canvasId = `priceChart-${product.product_id}`;
+            var canvasId = `priceChart-${product.productId}`;
             productDiv.innerHTML = `
             <h2>${product.name}</h2>
-            <img src="">
+            <img src="${product.path}">
             <p>Description: ${product.description}</p>
-            <p class="price"></p>
-            <button onclick="addToCart('${product.name}', '${product.product_id}', ${index})">Add to Cart</button>
-            <button onclick="showPriceChart('${canvasId}','${product.product_id}')">View Price Chart</button>
+            <p class="price"> ${product.price} $</p>
+            <button onclick="addToCart('${product.name}', '${product.price}', ${index})">Add to Cart</button>
+            <button onclick="showPriceChart('${canvasId}','${product.productId}')">View Price Chart</button>
         `;
-
             productList.appendChild(productDiv);
 
-            // Update the product object with the productDiv
-            displayedProducts[index].productDiv = productDiv;
+            // Ensure displayedProducts array is populated and has the necessary length
+            if (!displayedProducts[index]) {
+                displayedProducts[index] = {};
+            }
 
-            getPrice(product.product_id, productDiv, canvasId);
-            getSrc(product.product_id, productDiv);
+            displayedProducts[index].productDiv = productDiv;
         });
     }
-    function addToCart(productName, price, index) {
-        const existingProduct = cart.find(item => item.name === productName);
 
+
+    function addToCart(productName, price, index) {
+        console.log(price)
+        const existingProduct = cart.find(item => item.name === productName);
         if (existingProduct) {
             existingProduct.price += parseFloat(price);
         } else {
@@ -240,71 +228,30 @@
         localStorage.setItem('cart', JSON.stringify(cart));
         alert("Add Success");
     }
-
     function cartS() {
         window.location.href = 'cart.html';
     }
-
     function showPriceChart(canvasId, productIdForChart) {
         window.location.href = `chart.html#${productIdForChart}`;
-    }
-
-    function getPriceForProduct(productId) {
-        const product = displayedProducts.find(p => p.product_id === productId);
-
-        if (product && product.productDiv) {
-            const priceElement = product.productDiv.querySelector(".price");
-
-            // Check if the product has a price and productDiv
-            if (priceElement) {
-                return parseFloat(priceElement.innerText.replace('$', ''));
-            } else {
-                return null;
-            }
-        }
-
-        return 0;
-    }
-
-    function sortProductsByPrice() {
-        displayedProducts.sort((a, b) => {
-            const aPrice = getPriceForProduct(a.product_id);
-            const bPrice = getPriceForProduct(b.product_id);
-
-            if (aPrice !== null && bPrice !== null) {
-                return aPrice - bPrice;
-            } else {
-                return aPrice !== null ? -1 : 1;
-            }
-        });
-
-        displayProducts(displayedProducts);
-    }
-    function sortProductsByPriceDESC() {
-        displayedProducts.sort((a, b) => {
-            const aPrice = getPriceForProduct(a.product_id);
-            const bPrice = getPriceForProduct(b.product_id);
-
-            if (aPrice !== null && bPrice !== null) {
-                return bPrice - aPrice;  // Reverse the order for descending sorting
-            } else {
-                return aPrice !== null ? 1 : -1;
-            }
-        });
-
-        displayProducts(displayedProducts);
     }
     function searchProducts() {
         const searchInput = document.getElementById("searchInput");
         const searchTerm = searchInput.value.toLowerCase();
-
         const filteredProducts = displayedProducts.filter(product =>
             product.name.toLowerCase().includes(searchTerm)
         );
-
         displayProducts(filteredProducts);
     }
     fetchProducts();
+    function sortProductsByPrice() {
+        displayedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        displayProducts(displayedProducts);
+    }
+
+    function sortProductsByPriceDESC() {
+        displayedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        displayProducts(displayedProducts);
+    }
 </script>
 </body>
 </html>

@@ -6,9 +6,12 @@ import jakarta.ws.rs.core.Response;
 import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductAndImageDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductInfoDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductImage;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductPrice;
 import vn.edu.iuh.fit.wwwlab02.backend.services.ProductService;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Path("/products")
@@ -28,7 +31,7 @@ public class ProductResource {
     }
 
     @GET
-    @Path("/test")
+    @Path("/active")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getActive() {
@@ -53,6 +56,7 @@ public class ProductResource {
             System.out.println(dto);
             Product product = new Product();
             ProductImage productImage = new ProductImage();
+            ProductPrice productPrice = new ProductPrice();
             product.setName(dto.getProductName());
             product.setDescription(dto.getDescription());
             product.setManufacturer(dto.getManufacturer());
@@ -61,7 +65,12 @@ public class ProductResource {
             productImage.setProduct(product);
             productImage.setPath(dto.getPath());
             productImage.setAlternative(dto.getAlternative());
-            boolean success = productService.insertProduct(product, productImage);
+            productPrice.setProduct(product);
+            productPrice.setPrice(dto.getPrice());
+            productPrice.setNote("gia dau tien");
+            LocalDateTime ldt = LocalDateTime.now();
+            productPrice.setPrice_date_time(ldt);
+            boolean success = productService.insertProduct(product, productImage,productPrice);
             if (success) {
                 return Response.ok().build();
             } else {

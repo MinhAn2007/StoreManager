@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductInfoDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductImage;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductPrice;
 import vn.edu.iuh.fit.wwwlab02.backend.enums.ProductStatus;
 
 import java.util.ArrayList;
@@ -23,13 +24,13 @@ public class ProductRepository {
         trans = em.getTransaction();
     }
 
-    public boolean insertProduct(Product product, ProductImage productImage) {
+    public boolean insertProduct(Product product, ProductImage productImage, ProductPrice productPrice) {
         try {
             trans.begin();
 
             em.persist(product);
             em.persist(productImage);
-
+            em.persist(productPrice);
             trans.commit();
             return true;
         } catch (Exception e) {
@@ -109,7 +110,7 @@ public class ProductRepository {
     public List<ProductInfoDTO> getActiveProductInfo() {
         try {
             trans.begin();
-            List<Product> list = em.createQuery("SELECT p FROM Product p JOIN FETCH p.productImageList ig JOIN FETCH p.productPrices pp WHERE p.status = :status order by pp.price_date_time desc ", Product.class)
+            List<Product> list = em.createQuery("SELECT distinct p FROM Product p JOIN FETCH p.productImageList ig JOIN FETCH p.productPrices pp WHERE p.status = :status order by pp.price_date_time desc ", Product.class)
                     .setParameter("status", ProductStatus.ACTIVE)
                     .getResultList();
 

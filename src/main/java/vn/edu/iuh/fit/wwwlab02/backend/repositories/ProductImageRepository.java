@@ -45,7 +45,7 @@ public class ProductImageRepository {
     }
 
     public Optional<ProductImage> findProductImage(long id) {
-        TypedQuery<ProductImage> query = em.createQuery("select o from ProductImage o where o.image_id=:id", ProductImage.class);
+        TypedQuery<ProductImage> query = em.createQuery("select pi from ProductImage pi join Product p on pi.product.product_id=p.product_id where p.product_id=:id", ProductImage.class);
         query.setParameter("id", id);
         ProductImage productImage = query.getSingleResult();
         return productImage == null ? Optional.empty() : Optional.of(productImage);

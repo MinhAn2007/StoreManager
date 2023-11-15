@@ -17,7 +17,9 @@ public class ProductAndImageDTO {
     private String path;
     private String alternative;
 
-    public ProductAndImageDTO(String productName, String description, String unit, String manufacturer, ProductStatus status, Long id, String path, String alternative) {
+    private double price;
+
+    public ProductAndImageDTO(String productName, String description, String unit, String manufacturer, ProductStatus status, Long id, String path, String alternative, double price) {
         this.productName = productName;
         this.description = description;
         this.unit = unit;
@@ -26,6 +28,7 @@ public class ProductAndImageDTO {
         this.id = id;
         this.path = path;
         this.alternative = alternative;
+        this.price = price;
     }
 
     public ProductAndImageDTO() {
@@ -93,5 +96,13 @@ public class ProductAndImageDTO {
 
     public void setAlternative(String alternative) {
         this.alternative = alternative;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
