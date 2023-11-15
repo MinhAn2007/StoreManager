@@ -55,28 +55,28 @@
     }
 
     fetchEmployeeData();
-    const deleteEmp = (customerId) => {
-        // const confirmDelete = confirm("Are you sure you want to delete this customer?");
-        //
-        // if (confirmDelete) {
-        //     fetch(`http://localhost:8080/api/customers/${customerId}`, {
-        //         method: 'DELETE',
-        //     })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error('Network response was not ok');
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             console.log('Success:', data);
-        //             alert("Delete Success");
-        //             location.reload();
-        //         })
-        //         .catch(error => {
-        //             console.error('Error:', error);
-        //         });
-        // }
+    const deleteEmp = (empId) => {
+        const confirmDelete = confirm("Are you sure you want to delete this customer?");
+
+        if (confirmDelete) {
+            fetch(`http://localhost:8080/api/employee/${empId}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert("Delete Success");
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     };
 </script>
 </body>
