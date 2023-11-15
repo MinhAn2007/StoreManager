@@ -2,10 +2,11 @@
 <html>
 <head>
     <title>Add Customer</title>
+    <link rel="stylesheet" type="text/css" href="Form.css">
 </head>
 <body>
 <h1>Add Customer</h1>
-<form id="customerForm" method="POST" action="/controller">
+<form id="customerForm">
     <label for="cust_name">Name:</label>
     <input type="text" id="cust_name" name="name" required><br>
 
@@ -20,6 +21,42 @@
 
     <input type="submit" value="Add Customer">
 </form>
+
+<script>
+    document.getElementById('customerForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+
+          const formDataObject = {};
+        formData.forEach((value, key) => {
+            formDataObject[key] = value;
+        });
+
+        const jsonData = JSON.stringify(formDataObject);
+
+        fetch('http://localhost:8080/api/customers', {
+            method: 'POST',
+            body: jsonData,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                alert("add Success")
+                window.location.href = 'customerListing.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
 </body>
 </html>
-``

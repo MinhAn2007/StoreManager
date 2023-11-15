@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Customer</title>
+    <link rel="stylesheet" type="text/css" href="Form.css">
+</head>
+<body>
+<h1>Update Customer</h1>
+<form id="updateCustomerForm">
+    <input type="text" id="id" name="id" hidden><br>
+
+    <label for="cust_name">Name:</label>
+    <input type="text" id="cust_name" name="name" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+
+    <label for="phone">Phone:</label>
+    <input type="tel" id="phone" name="phone" required><br>
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required><br>
+
+    <input type="submit" value="Update Customer">
+</form>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const customerId = urlParams.get('id');
+
+    if (customerId) {
+        document.getElementById('id').value = customerId;
+        fetch(`http://localhost:8080/api/customers/${customerId}`)
+            .then(response => response.json())
+            .then(customer => {
+                document.getElementById('cust_name').value = customer.name;
+                document.getElementById('email').value = customer.email;
+                document.getElementById('phone').value = customer.phone;
+                document.getElementById('address').value = customer.address;
+            })
+            .catch(error => {
+                console.error('Error fetching customer data:', error);
+            });
+
+        document.getElementById('updateCustomerForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+
+            const customerData = {};
+            formData.forEach((value, key) => {
+                customerData[key] = value;
+            });
+            fetch(`http://localhost:8080/api/customers/${customerId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(customerData),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert("update Success")
+                    window.location.href = 'customerListing.html';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    } else {
+        console.error('Customer ID not provided in the URL');
+    }
+</script>
+</body>
+</html>

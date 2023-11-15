@@ -8,6 +8,7 @@ import vn.edu.iuh.fit.wwwlab02.backend.entities.Customer;
 import vn.edu.iuh.fit.wwwlab02.backend.services.CustomerService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Path("/customers")
 public class CustomerResource {
@@ -24,31 +25,36 @@ public class CustomerResource {
         return Response.ok(customer).build();
     }
 
-//    @PUT
-//    @Path("/{id}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response update(@PathParam("id") long id, Customer customer) {
-//        Customer cus = customerService.finCustomer(id).get();
-//        if (cus == null)
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        boolean update = customerService.updateCustomer(customer);
-//        if (!update)
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        return Response.ok(customer).build();
-//    }
-//
-//    @GET
-//    @Path("/{id}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response findByID(@PathParam("id") long id) {
-//        Customer customer = customerService.finCustomer(id).get();
-//        if (customer == null)
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        return Response.ok(customer).build();
-//    }
-//
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id") long id,Customer customer) {
+        Optional<Customer> optionalCustomer = customerService.findCus(id);
+        if (optionalCustomer.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        boolean update = customerService.updateCus(customer);
+        if (!update) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(customer).build();
+    }
+    @GET
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByID(@PathParam("id") long id) {
+        Optional<Customer> optionalCustomer = customerService.findCus(id);
+
+        if (optionalCustomer.isPresent()) {
+            Customer customer = optionalCustomer.get();
+            return Response.ok(customer).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
     @GET
     @Path("/all")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -57,15 +63,15 @@ public class CustomerResource {
         List<Customer> list = customerService.getAll();
         return Response.ok(list).build();
     }
-//
-//    @DELETE
-//    @Path("/{id}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response delete(@PathParam("id") long id) {
-//        boolean delete = customerService.deleteCustomer(id);
-//        if (!delete)
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        return Response.ok(id).build();
-//    }
+
+    @DELETE
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response delete(@PathParam("id") long id) {
+        boolean delete = customerService.deleteCus(id);
+        if (!delete)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(id).build();
+    }
 }
