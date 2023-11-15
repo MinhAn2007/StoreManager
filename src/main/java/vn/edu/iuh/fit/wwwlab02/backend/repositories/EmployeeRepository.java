@@ -3,6 +3,7 @@ package vn.edu.iuh.fit.wwwlab02.backend.repositories;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import vn.edu.iuh.fit.wwwlab02.backend.converts.EmployeeStatusConvert;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Employee;
 import vn.edu.iuh.fit.wwwlab02.backend.enums.EmployeeStatus;
 
@@ -15,13 +16,14 @@ public class EmployeeRepository {
     private EntityTransaction trans;
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-
     public EmployeeRepository() {
         em = Persistence.createEntityManagerFactory("Lab_02").createEntityManager();
         trans = em.getTransaction();
     }
 
     public boolean insertEmployee(Employee employee) {
+        System.out.println(employee.getStatus());
+
         try {
             trans.begin();
             em.persist(employee);

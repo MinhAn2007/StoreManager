@@ -46,3 +46,16 @@ a:hover {
 .add-customer-btn:hover {
     background-color: #45a049;
 }
+.back-btn {
+    display: inline-block;
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.back-btn:hover {
+    background-color: #2980b9;
+}

@@ -2,8 +2,11 @@
 <html>
 <head>
     <title>Employee List</title>
+    <link rel="stylesheet" type="text/css" href="List.css">
 </head>
 <body>
+<a class="back-btn" href="admin.jsp">Back</a>
+<a class="add-customer-btn" href="addEmp.html">Add Employee</a>
 <table width="80%" align="center">
     <tr>
         <th>ID</th>
@@ -36,10 +39,12 @@
                         <td>${employee.fullname}</td>
                         <td>${employee.dob}</td>
                         <td>${employee.phone}</td>
-
+                        <td>${employee.email}</td>
+                        <td>${employee.address}</td>
+                        <td>${employee.status}</td>
                         <td>
                             <a href="">Update</a>
-                            <a href="">Delete</a>
+                                <a href="javascript:void(0);" onclick="deleteEmp(${employee.id})">Delete</a>
                         </td>
                     `;
                 employeeList.appendChild(row);
@@ -49,8 +54,30 @@
         }
     }
 
-    // Gọi hàm để lấy dữ liệu
     fetchEmployeeData();
+    const deleteEmp = (customerId) => {
+        // const confirmDelete = confirm("Are you sure you want to delete this customer?");
+        //
+        // if (confirmDelete) {
+        //     fetch(`http://localhost:8080/api/customers/${customerId}`, {
+        //         method: 'DELETE',
+        //     })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             console.log('Success:', data);
+        //             alert("Delete Success");
+        //             location.reload();
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // }
+    };
 </script>
 </body>
 </html>

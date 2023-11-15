@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee</title>
+    <link rel="stylesheet" type="text/css" href="Form.css">
+</head>
+<body>
+<h1>Add Employee</h1>
+<form id="employeeForm">
+  <label for="fullname">Full Name:</label>
+  <input type="text" id="fullname" name="fullname" placeholder="Vui long nhap ten khong dau: Vo Ngoc Minh An" required>
+
+  <label for="dob">Date of Birth:</label>
+  <input type="date" id="dob" name="dob" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" placeholder="123@gmail.com" required>
+
+  <label for="phone">Phone:</label>
+  <input type="tel" id="phone" name="phone" placeholder="0837710747" required>
+
+  <label for="address">Address:</label>
+  <input type="text" id="address" name="address" placeholder="Long An" required>
+
+  <label for="status">Status:</label>
+  <select id="status" name="status" required>
+    <option value="0" selected>Active</option>
+  </select>
+  <br><br>
+  <input type="submit" value="Add Employee">
+</form>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var defaultSelectedValue = document.getElementById('status').value;
+    console.log('Default Selected Value:', defaultSelectedValue);
+  });
+  document.getElementById('employeeForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    console.log(document.getElementById('status').valueOf())
+    const formDataObject = {};
+    formData.forEach((value, key) => {
+      formDataObject[key] = value;
+    });
+
+    const jsonData = JSON.stringify(formDataObject);
+
+    fetch('http://localhost:8080/api/employee', {
+      method: 'POST',
+      body: jsonData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('Success:', data);
+              console.log('Success:', data.status);
+
+              alert("add Success")
+              window.location.href = 'EmployeeListing.html';
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  });
+</script>
+</body>
+</html>

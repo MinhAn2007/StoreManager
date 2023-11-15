@@ -4,7 +4,9 @@ package vn.edu.iuh.fit.wwwlab02.backend.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import vn.edu.iuh.fit.wwwlab02.backend.converts.EmployeeStatusConvert;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Employee;
+import vn.edu.iuh.fit.wwwlab02.backend.enums.EmployeeStatus;
 import vn.edu.iuh.fit.wwwlab02.backend.services.EmployeeService;
 
 import java.util.List;
@@ -20,6 +22,10 @@ public class EmployeeResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response insert(Employee employee) {
+        EmployeeStatusConvert employeeStatusConvert = new EmployeeStatusConvert();
+        Integer statusInDatabase = employeeStatusConvert.convertToDatabaseColumn(employee.getStatus());
+        System.out.println(statusInDatabase);
+        employee.setStatus(EmployeeStatus.fromcode(statusInDatabase));
         employeeService.insertEmployee(employee);
         return Response.ok(employee).build();
     }

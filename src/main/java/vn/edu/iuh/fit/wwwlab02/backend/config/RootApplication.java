@@ -2,6 +2,8 @@ package vn.edu.iuh.fit.wwwlab02.backend.config;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
+import vn.edu.iuh.fit.wwwlab02.backend.converts.EmployeeStatusConvert;
+import vn.edu.iuh.fit.wwwlab02.backend.converts.ProductStatusConvert;
 import vn.edu.iuh.fit.wwwlab02.backend.resources.*;
 import vn.edu.iuh.fit.wwwlab02.backend.converts.ObjectMapperContextResolver;
 
@@ -22,6 +24,8 @@ public class RootApplication extends Application {
         classes.add(OrderDetailResource.class);
         classes.add(ProductImageResource.class);
         classes.add(ProductPriceResource.class);
+        classes.add(EmployeeStatusConvert.class);
+        classes.add(ProductStatusConvert.class);
 
         return classes;
     }
