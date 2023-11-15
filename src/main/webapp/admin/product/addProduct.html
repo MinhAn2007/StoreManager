@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Product</title>
+  <link rel="stylesheet" type="text/css" href="../Form.css">
+</head>
+<body>
+<h1>Add Product</h1>
+<form id="productAndImageForm">
+  <label for="productName">Product Name:</label>
+  <input type="text" id="productName" name="productName" required><br>
+  <label for="description">Description:</label>
+  <textarea id="description" name="description" required></textarea><br>
+
+  <label for="unit">Unit:</label>
+  <input type="text" id="unit" name="unit" required><br>
+
+  <label for="manufacturer">Manufacturer Name:</label>
+  <input type="text" id="manufacturer" name="manufacturer" required><br>
+
+  <label for="status">Status:</label>
+  <select id="status" name="status" required>
+    <option value="ACTIVE">ACTIVE</option>
+  </select><br>
+  <label for="path">Image Path:</label>
+  <input type="text" id="path" name="path" required><br>
+  <label for="alternative">Image Alternative:</label>
+  <input type="text" id="alternative" name="alternative" required><br>
+  <input type="submit" value="Add Product">
+</form>
+
+<script>
+  document.getElementById('productAndImageForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    const productAndImageDTO = {};
+    formData.forEach((value, key) => {
+      productAndImageDTO[key] = value;
+    });
+    const jsonData = JSON.stringify(productAndImageDTO);
+
+    fetch('http://localhost:8080/api/products', {
+      method: 'POST',
+      body: jsonData,
+
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+
+              const contentType = response.headers.get('content-type');
+              if (contentType && contentType.includes('application/json')) {
+                return response.json();
+              } else {
+                return null;
+              }
+            })
+            .then(data => {
+              console.log('Success:', data);
+              alert("add Success")
+              window.location.href = 'productListing.html';
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  });
+</script>
+</body>
+</html>

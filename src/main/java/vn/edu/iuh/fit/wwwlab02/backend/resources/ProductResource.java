@@ -3,7 +3,9 @@ package vn.edu.iuh.fit.wwwlab02.backend.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductAndImageDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductInfoDTO;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductImage;
 import vn.edu.iuh.fit.wwwlab02.backend.services.ProductService;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 
@@ -21,7 +23,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        List<Product> list = productService.getActiveProduct();
+        List<Product> list = productService.getAllProduct();
         return Response.ok(list).build();
     }
 
@@ -46,10 +48,30 @@ public class ProductResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response insert(Product product){
-        productService.insertProduct(product);
-        return Response.ok(product).build();
+    public Response insert(ProductAndImageDTO dto) {
+        try {
+            System.out.println(dto);
+            Product product = new Product();
+            ProductImage productImage = new ProductImage();
+            product.setName(dto.getProductName());
+            product.setDescription(dto.getDescription());
+            product.setManufacturer(dto.getManufacturer());
+            product.setUnit(dto.getUnit());
+            product.setStatus(dto.getStatus());
+            productImage.setProduct(product);
+            productImage.setPath(dto.getPath());
+            productImage.setAlternative(dto.getAlternative());
+            boolean success = productService.insertProduct(product, productImage);
+            if (success) {
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
+
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)

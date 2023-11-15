@@ -2,6 +2,7 @@ package vn.edu.iuh.fit.wwwlab02.backend.services;
 
 import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductInfoDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductImage;
 import vn.edu.iuh.fit.wwwlab02.backend.repositories.ProductRepository;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class ProductService {
 
     }
 
-    public boolean insertProduct(Product product) {
-        return repo.insertProduct(product);
+    public boolean insertProduct(Product product, ProductImage productImage) {
+        return repo.insertProduct(product,productImage);
     }
 
     public boolean updateProduct(Product product) {
@@ -34,4 +35,6 @@ public class ProductService {
         return repo.getActiveProductInfo();
     }
     public List<Product> getActiveProduct(){return repo.getActiveProduct();}
+    public List<Product> getAllProduct(){return repo.getAllProducts();}
+
 }

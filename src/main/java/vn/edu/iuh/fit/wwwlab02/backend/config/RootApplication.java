@@ -16,10 +16,9 @@ public class RootApplication extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet<>();
         classes.add(ObjectMapperContextResolver.class);
-        // Đăng ký các resource của bạn ở đây
-        classes.add(CustomerResource.class); // Đăng ký resource của bạn
-        classes.add(ProductResource.class); // Đăng ký resource của bạn
-        classes.add(EmployeeResource.class); // Đăng ký resource của bạn
+        classes.add(CustomerResource.class);
+        classes.add(ProductResource.class);
+        classes.add(EmployeeResource.class);
         classes.add(OrderResource.class);
         classes.add(OrderDetailResource.class);
         classes.add(ProductImageResource.class);

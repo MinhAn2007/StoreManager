@@ -52,11 +52,11 @@
         <ul class="submenu">
             <li><a href="cus/CustomerListing.html">List Customer</a></li>
             <li><a href="emp/EmployeeListing.html">List Employee</a></li>
-            <li><a href="productListing.html">List Product</a></li>
-            <li><a href="ordersListing.html">List Orders</a></li>
-            <li><a href="orderDetailsListing.html">List OrderDetails</a></li>
-            <li><a href="productImageListing.html">List ProductImage</a></li>
-            <li><a href="productPriceListing.html">List ProductPrice</a></li>
+            <li><a href="product/productListing.html">List Product</a></li>
+            <li><a href="order/ordersListing.html">List Orders</a></li>
+            <li><a href="order/orderDetailsListing.html">List OrderDetails</a></li>
+            <li><a href="product/productImageListing.html">List ProductImage</a></li>
+            <li><a href="product/productPriceListing.html">List ProductPrice</a></li>
         </ul>
     </li>
 </ul>

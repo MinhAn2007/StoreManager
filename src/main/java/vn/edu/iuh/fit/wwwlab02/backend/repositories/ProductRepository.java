@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.iuh.fit.wwwlab02.backend.dto.ProductInfoDTO;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductImage;
 import vn.edu.iuh.fit.wwwlab02.backend.enums.ProductStatus;
 
 import java.util.ArrayList;
@@ -22,10 +23,13 @@ public class ProductRepository {
         trans = em.getTransaction();
     }
 
-    public boolean insertProduct(Product product) {
+    public boolean insertProduct(Product product, ProductImage productImage) {
         try {
             trans.begin();
+
             em.persist(product);
+            em.persist(productImage);
+
             trans.commit();
             return true;
         } catch (Exception e) {
@@ -34,6 +38,7 @@ public class ProductRepository {
         }
         return false;
     }
+
 
     public boolean updateProduct(Product product) {
         try {

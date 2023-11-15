@@ -2,8 +2,12 @@
 <html>
 <head>
     <title>Product List</title>
+    <link rel="stylesheet" type="text/css" href="../List.css">
+
 </head>
 <body>
+<a class="back-btn" href="../admin.jsp">Back</a>
+<a class="add-customer-btn" href="addProduct.html">Add Product</a>
 <table width="80%" align="center">
     <tr>
         <th>ID</th>
@@ -19,7 +23,6 @@
 </table>
 
 <script>
-    // Gọi API để lấy danh sách khách hàng
     fetch('http://localhost:8080/api/products/all')
         .then(response => response.json())
         .then(data => {
@@ -32,11 +35,10 @@
                         <td>${product.description}</td>
                         <td>${product.unit}</td>
                         <td>${product.manufacturer}</td>
-                                                <td>${product.status}</td>
-
+                        <td>${product.status}</td>
                         <td>
-                            <a href="">Update</a>
-                            <a href="">Delete</a>
+                                <a href="updateEmp.html?id=${product.product_id}">Update</a>
+                                <a href="javascript:void(0);">Delete</a>
                         </td>
                     `;
                 productList.appendChild(row);
