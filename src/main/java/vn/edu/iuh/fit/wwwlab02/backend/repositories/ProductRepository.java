@@ -10,6 +10,7 @@ import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductPrice;
 import vn.edu.iuh.fit.wwwlab02.backend.enums.ProductStatus;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +42,11 @@ public class ProductRepository {
     }
 
 
-    public boolean updateProduct(Product product) {
+    public boolean updateProduct(Product product, ProductImage productImage) {
         try {
             trans.begin();
             em.merge(product);
+            em.merge(productImage);
             trans.commit();
             return true;
         } catch (Exception e) {
@@ -53,6 +55,7 @@ public class ProductRepository {
         }
         return false;
     }
+
 
     public Optional<Product> findProduct(long id) {
         TypedQuery<Product> query = em.createQuery("select e from Product e where e.product_id=:id", Product.class);
@@ -110,7 +113,12 @@ public class ProductRepository {
     public List<ProductInfoDTO> getActiveProductInfo() {
         try {
             trans.begin();
-            List<Product> list = em.createQuery("SELECT distinct p FROM Product p JOIN FETCH p.productImageList ig JOIN FETCH p.productPrices pp WHERE p.status = :status order by pp.price_date_time desc ", Product.class)
+            List<Product> list = em.createQuery(
+                            "SELECT DISTINCT p FROM Product p " +
+                                    "JOIN FETCH p.productImageList ig " +
+                                    "JOIN FETCH p.productPrices pp " +
+                                    "WHERE p.status = :status " +
+                                    "ORDER BY pp.price_date_time DESC", Product.class)
                     .setParameter("status", ProductStatus.ACTIVE)
                     .getResultList();
 
@@ -123,10 +131,27 @@ public class ProductRepository {
                 productInfoDTO.setDescription(p.getDescription());
                 productInfoDTO.setUnit(p.getUnit());
                 productInfoDTO.setManufacturer(p.getManufacturer());
-                String imagePath = p.getProductImageList().get(0).getPath();
-                double price = p.getProductPrices().get(0).getPrice();
-                productInfoDTO.setPath(imagePath);
-                productInfoDTO.setPrice(price);
+
+                if (!Persistence.getPersistenceUtil().isLoaded(p.getProductImageList())) {
+                    Persistence.getPersistenceUtil().isLoaded(p.getProductImageList());
+                }
+
+                if (!Persistence.getPersistenceUtil().isLoaded(p.getProductPrices())) {
+                    Persistence.getPersistenceUtil().isLoaded(p.getProductPrices());
+                }
+
+                p.getProductPrices().sort(Comparator.comparing(ProductPrice::getPrice_date_time).reversed());
+
+                if (!p.getProductImageList().isEmpty()) {
+                    String imagePath = p.getProductImageList().get(0).getPath();
+                    productInfoDTO.setPath(imagePath);
+                }
+
+                if (!p.getProductPrices().isEmpty()) {
+                    double price = p.getProductPrices().get(0).getPrice();
+                    productInfoDTO.setPrice(price);
+                }
+
                 productInfoDTOs.add(productInfoDTO);
             }
 
@@ -138,5 +163,7 @@ public class ProductRepository {
             return null;
         }
     }
+
+
 
 }

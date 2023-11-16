@@ -13,6 +13,5 @@
 <body>
     <a href="admin/admin.jsp">ADMIN</a>
     <a href="customer/productList.html">CUSTOMER</a>
-
 </body>
 </html>

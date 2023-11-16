@@ -20,9 +20,8 @@ public class ProductService {
         return repo.insertProduct(product,productImage,productPrice);
     }
 
-    public boolean updateProduct(Product product) {
-        return repo.updateProduct(product);
-    }
+    public boolean updateProduct(Product product,ProductImage productImage) {
+        return repo.updateProduct(product,productImage);}
 
     public Optional<Product> findProduct(long id) {
         return repo.findProduct(id);

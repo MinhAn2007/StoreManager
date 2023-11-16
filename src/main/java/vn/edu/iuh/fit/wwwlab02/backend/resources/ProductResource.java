@@ -13,6 +13,7 @@ import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/products")
 public class ProductResource {
@@ -85,14 +86,38 @@ public class ProductResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") long id,Product product){
-        if(productService.findProduct(id).isEmpty())
-            return Response.status(Response.Status.NOT_FOUND).build();
-        boolean update= productService.updateProduct(product);
-        if(!update)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(product).build();
+    public Response update(@PathParam("id") long id, ProductAndImageDTO dto) {
+        try {
+            Optional<Product> optionalProduct = productService.findProduct(id);
+            if (optionalProduct.isPresent()) {
+                Product product = optionalProduct.get();
+                List<ProductImage> productImages = product.getProductImageList();
+                if (!productImages.isEmpty()) {
+                    ProductImage productImage = productImages.get(0);
+                    productImage.setPath(dto.getPath());
+                    productImage.setAlternative(dto.getAlternative());
+                }
+                product.setName(dto.getProductName());
+                product.setDescription(dto.getDescription());
+                product.setManufacturer(dto.getManufacturer());
+                product.setUnit(dto.getUnit());
+                product.setStatus(dto.getStatus());
+
+                boolean success = productService.updateProduct(product,productImages.get(0));
+
+                if (success) {
+                    return Response.ok().build();
+                } else {
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                }
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
+
     @DELETE
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)

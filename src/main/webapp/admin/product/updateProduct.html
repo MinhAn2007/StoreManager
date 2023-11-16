@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Update Product</title>
+    <link rel="stylesheet" type="text/css" href="../Form.css">
+</head>
+
+<body>
+<h1>Update Product</h1>
+<form id="productAndImageForm">
+    <label for="productName">Product Name:</label>
+    <input type="text" id="productName" name="productName" required><br>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea><br>
+
+    <label for="unit">Unit:</label>
+    <input type="text" id="unit" name="unit" required><br>
+
+    <label for="manufacturer">Manufacturer Name:</label>
+    <input type="text" id="manufacturer" name="manufacturer" required><br>
+
+    <label for="status">Status:</label>
+    <select id="status" name="status" required>
+        <option value="0" selected>Active</option>
+        <option value="1" >Dective</option>
+        <option value="2" >Delete</option>
+    </select>
+    <br>
+    <label for="path">Image Path:</label>
+    <input type="text" id="path" name="path" required><br>
+    <label for="alternative">Image Alternative:</label>
+    <input type="text" id="alternative" name="alternative" required><br>
+
+    <input type="hidden" id="id" name="id">
+    <input type="submit" value="Update Product">
+</form>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    if (productId) {
+        document.getElementById('id').value = productId;
+        fetch(`http://localhost:8080/api/products/${productId}`)
+            .then(response => response.json())
+            .then(product => {
+                document.getElementById('productName').value = product.name;
+                document.getElementById('description').value = product.description;
+                document.getElementById('unit').value = product.unit;
+                document.getElementById('manufacturer').value = product.manufacturer;
+                document.getElementById('status').value = product.status;
+                document.getElementById('path').value = product.productImageList.length > 0 ? product.productImageList[0].path : '';
+                document.getElementById('alternative').value = product.productImageList.length > 0 ? product.productImageList[0].alternative : '';
+            })
+            .catch(error => {
+                console.error('Error fetching product data:', error);
+            });
+
+        document.getElementById('productAndImageForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+
+            const productData = {};
+            formData.forEach((value, key) => {
+                productData[key] = value;
+            });
+            fetch(`http://localhost:8080/api/products/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        return null;
+                    }
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert("Update Success")
+                    window.location.href = 'productListing.html';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    } else {
+        console.error('Product ID not provided in the URL');
+    }
+
+</script>
+</body>
+
+</html>

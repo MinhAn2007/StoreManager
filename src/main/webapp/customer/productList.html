@@ -156,37 +156,19 @@
     var productList = [];
     var displayedProducts = [];
 
-    function fetchProducts() {
-        fetch("http://localhost:8080/api/products/active")
-            .then(response => response.json())
-            .then(data => {
-                displayedProducts = data.map(product => ({ ...product, productDiv: null }));
-                productList = data;
-                displayProducts(displayedProducts);
-            })
-            .catch(error => console.error("Error fetching products: " + error));
-    }
 
-    var cart = [];
-    var total = 0;
-    var productList = [];
-    var displayedProducts = [];
 
     function fetchProducts() {
         fetch("http://localhost:8080/api/products/active")
             .then(response => response.json())
             .then(data => {
-                productList = data;
-                displayedProducts = data.map(product => ({ ...product, productDiv: null }));
+                productList = data.filter(product => product.price !== 0 && product.path !== null);
+                displayedProducts = productList.map(product => ({ ...product, productDiv: null }));
                 displayProducts(displayedProducts);
             })
             .catch(error => console.error("Error fetching products: " + error));
     }
-
-    // Other functions...
-
-    fetchProducts();  // Call fetchProducts when the page loads
-
+    fetchProducts()
     function displayProducts(products) {
         var productList = document.getElementById("productList");
 
@@ -215,7 +197,6 @@
         });
     }
 
-
     function addToCart(productName, price, index) {
         console.log(price)
         const existingProduct = cart.find(item => item.name === productName);
@@ -242,7 +223,6 @@
         );
         displayProducts(filteredProducts);
     }
-    fetchProducts();
     function sortProductsByPrice() {
         displayedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
         displayProducts(displayedProducts);

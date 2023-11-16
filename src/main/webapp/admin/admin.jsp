@@ -60,5 +60,6 @@
         </ul>
     </li>
 </ul>
+<a href="http://localhost:8080/">HOME</a>
 </body>
 </html>
