@@ -70,7 +70,7 @@
             .then(data => {
                 console.log('Success:', data);
                 alert('Price added successfully');
-                window.location.href="detailsProduct.html";
+                window.location.href = `detailsProduct.html?id=${productId}`;
             })
             .catch(error => {
                 console.error('Error:', error);
