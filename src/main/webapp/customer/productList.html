@@ -135,8 +135,20 @@
     #sortButtons button {
         margin-right: 10px;
     }
+    a.home-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
 
+    a.home-link:hover {
+        background-color: #2980b9; /* Change color on hover */
+    }
 </style>
+<a href="http://localhost:8080/" class="home-link">HOME</a>
 <h1>Product List</h1>
 <div id="sortButtons">
     <button onclick="sortProductsByPrice()">Sort ASC</button>
