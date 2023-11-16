@@ -14,8 +14,8 @@ public class ProductPriceService {
 
     }
 
-    public boolean insertProductPrice(ProductPrice productPrice) {
-        return repo.insertProductPrice(productPrice);
+    public void insertProductPrice(ProductPrice productPrice) {
+        repo.insertProductPrice(productPrice);
     }
 
     public boolean updateProductPrice(ProductPrice productPrice) {

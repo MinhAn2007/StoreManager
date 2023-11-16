@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Form.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Price</title>
+</head>
+<body>
+<h2>Add Price</h2>
+<form id="addPriceForm">
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" required>
+
+    <label for="note">Note:</label>
+    <input type="text" id="note" name="note">
+
+    <label for="price_date_time">Price Date:</label>
+    <input type="datetime-local" id="price_date_time" name="price_date_time" required>
+
+    <button type="button" onclick="addPrice()">Add Price</button>
+</form>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    var productId = urlParams.get('id');
+    console.log('productId:', productId);
+
+    function getCurrentDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    document.getElementById('price_date_time').value = getCurrentDateTime();
+    function addPrice() {
+        const price = document.getElementById('price').value;
+        const note = document.getElementById('note').value;
+        const price_date_time = document.getElementById('price_date_time').value;
+
+        if (!productId) {
+            alert('Product ID is required.');
+            return;
+        }
+
+        const priceData = {
+            price: price,
+            note: note,
+            price_date_time: price_date_time,
+            productId: productId
+        };
+
+        fetch('http://localhost:8080/api/productPrices', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(priceData),
+        }) .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+            .then(data => {
+                console.log('Success:', data);
+                alert('Price added successfully');
+                window.location.href="detailsProduct.html";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add price');
+            });
+    }
+
+</script>
+</body>
+</html>

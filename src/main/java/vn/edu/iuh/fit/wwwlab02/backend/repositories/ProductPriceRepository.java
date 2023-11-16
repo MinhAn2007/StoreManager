@@ -3,6 +3,7 @@ package vn.edu.iuh.fit.wwwlab02.backend.repositories;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.Customer;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductPrice;
 
 import java.time.LocalDateTime;
@@ -20,18 +21,17 @@ public class ProductPriceRepository {
         trans=em.getTransaction();
     }
 
-    public boolean insertProductPrice(ProductPrice productPrice){
+    public void insertProductPrice(ProductPrice productPrice){
         try {
-            trans.commit();
+            trans.begin();
             em.persist(productPrice);
             trans.commit();
-            return true;
         }catch (Exception e){
             logger.info(e.getMessage());
             trans.rollback();
         }
-        return false;
     }
+
     public boolean updateProductPrice(ProductPrice productPrice){
         try {
             trans.commit();

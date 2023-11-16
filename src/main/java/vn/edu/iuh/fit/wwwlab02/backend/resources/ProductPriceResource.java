@@ -3,16 +3,21 @@ package vn.edu.iuh.fit.wwwlab02.backend.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 import vn.edu.iuh.fit.wwwlab02.backend.services.ProductPriceService;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.ProductPrice;
+import vn.edu.iuh.fit.wwwlab02.backend.services.ProductService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/productPrices")
 public class ProductPriceResource {
     private final ProductPriceService productPriceService = new ProductPriceService();
+    private final ProductService productService = new ProductService();
+
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     public ProductPriceResource() {
@@ -38,13 +43,11 @@ public class ProductPriceResource {
     @GET
     @Path("/last/{id}")
     public Response findLatestProductPrice(@PathParam("id") long id) {
-        // Kiểm tra xem giá sản phẩm có ngày gần nhất tồn tại hay không
         Double latestPrice = productPriceService.findLatestProductPrice(id);
         if (latestPrice == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        // Trả về giá sản phẩm có ngày gần nhất
         return Response.ok(latestPrice).build();
     }
     @GET
@@ -62,6 +65,12 @@ public class ProductPriceResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response insert(ProductPrice productPrice) {
+        System.out.println(productPrice.getProductId());
+        System.out.println(productPrice.getPrice());
+        System.out.println(productPrice.getNote());
+        System.out.println(productPrice.getPrice_date_time());
+        Optional<Product> productOptional = productService.findProduct(productPrice.getProductId());
+        productPrice.setProduct(productOptional.get());
         productPriceService.insertProductPrice(productPrice);
         return Response.ok(productPrice).build();
     }
