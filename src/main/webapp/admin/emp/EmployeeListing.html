@@ -56,7 +56,7 @@
 
     fetchEmployeeData();
     const deleteEmp = (empId) => {
-        const confirmDelete = confirm("Are you sure you want to delete this customer?");
+        const confirmDelete = confirm("Are you sure you want to delete this product?");
 
         if (confirmDelete) {
             fetch(`http://localhost:8080/api/employee/${empId}`, {

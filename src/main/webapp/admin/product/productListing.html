@@ -38,12 +38,35 @@
                         <td>${product.status}</td>
                         <td>
                                 <a href="updateProduct.html?id=${product.product_id}">Update</a>
-                                <a href="javascript:void(0);">Delete</a>
+                                <a href="javascript:void(0);" onclick="deletePro(${product.product_id})">Delete</a>
                         </td>
                     `;
                 productList.appendChild(row);
             });
         });
+    const deletePro = (proId) => {
+        const confirmDelete = confirm("Are you sure you want to delete this product?");
+
+        if (confirmDelete) {
+            fetch(`http://localhost:8080/api/products/${proId}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert("Delete Success");
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    };
 </script>
 </body>
 </html>
