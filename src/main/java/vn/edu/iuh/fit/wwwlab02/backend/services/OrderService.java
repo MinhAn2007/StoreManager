@@ -1,6 +1,8 @@
 package vn.edu.iuh.fit.wwwlab02.backend.services;
 
+import vn.edu.iuh.fit.wwwlab02.backend.dto.OrderDto;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Order;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail;
 import vn.edu.iuh.fit.wwwlab02.backend.repositories.OrderRepository;
 
 import java.util.List;
@@ -12,10 +14,12 @@ public class OrderService {
     public OrderService() {
 
     }
-    public boolean insertOrder(Order orders) {return repo.insertOrder(orders);}
+    public boolean insertOrder(Order orders, OrderDetail orderDetail) {return repo.insertOrder(orders,orderDetail);}
     public boolean updateOrder(Order orders) {return repo.updateOrder(orders);}
     public Optional<Order> findOrder(long id) {return repo.findOrder(id);}
     public boolean deleteOrders(long id) {return repo.deleteOrders(id);}
     public List<Order> getAllOrders() {return repo.getAllOrders();}
+
+    public List<OrderDto> getInfoOrder(){return  repo.getInfoOrder();}
 
 }

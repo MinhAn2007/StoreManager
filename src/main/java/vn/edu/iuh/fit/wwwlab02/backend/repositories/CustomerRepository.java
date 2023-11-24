@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Customer;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.Employee;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,10 +34,19 @@ public class CustomerRepository {
         }
     }
 
-    public List<Customer> getAllCust() {
-        return em.createQuery("select c from Customer c", Customer.class).getResultList();
-    }
 
+    public List<Customer> getAllCust(){
+        try {
+            trans.begin();
+            List<Customer> list= em.createNativeQuery("Select * from customer order by cust_name ", Customer.class).getResultList();
+            trans.commit();
+            return list;
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            trans.rollback();
+        }
+        return null;
+    }
     public Optional<Customer> findCus(long id) {
         Customer customer = em.find(Customer.class, id);
         return Optional.ofNullable(customer);
