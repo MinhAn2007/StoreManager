@@ -269,6 +269,8 @@ Phần front end được tích hợp sẵn vào project để cho thuận tiệ
    Khi bạn nhập đầy đủ thông tin cần thiết cho việc thống kê bạn và bấm nút get Statistic. UI sẽ hiển thị thống các order được tạo ra bởi employee trong một khoảng thời gian đã được chọn
    ![img_82.png](image/img_82.png)
    (API method get statisticsByEmployeeAndDateRange với ba tham số được gọi để lấy dữ liệu thông kê theo một employee theo khoảng thời gian đã được chọn)
+   
+   ![img.png](img.png)
    ![img_83.png](image/img_83.png)
    Nhấn nút Back để quay lại
 
