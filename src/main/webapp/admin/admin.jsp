@@ -75,6 +75,7 @@
         <ul class="submenu">
             <li><a href="statistic/byDate.html">By Date</a></li>
             <li><a href="statistic/byRange.html">By Range</a></li>
+            <li><a href="statistic/byEmp.html">By Emp</a></li>
         </ul>
     </li>
 </ul>

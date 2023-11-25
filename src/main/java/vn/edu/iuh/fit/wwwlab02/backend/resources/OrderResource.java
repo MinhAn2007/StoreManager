@@ -112,7 +112,32 @@ public class OrderResource {
                     .build();
         }
     }
+    @GET
+    @Path("/statisticsByEmployeeAndDateRange")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderStatisticsByEmployeeAndDateRange(
+            @QueryParam("employeeId") Long employeeId,
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate) {
+        try {
+            if (employeeId == null || startDate == null || endDate == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Employee ID, start date, and end date are required.")
+                        .build();
+            }
 
+            LocalDate startLocalDate = LocalDate.parse(startDate);
+            LocalDate endLocalDate = LocalDate.parse(endDate);
+
+            List<Object[]> result = orderService.getOrderStatisticsByEmployeeAndDateRange(employeeId, startLocalDate, endLocalDate);
+            return Response.ok(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error retrieving order statistics by employee and date range: " + e.getMessage())
+                    .build();
+        }
+    }
     @GET
     @Path("/statisticsByDateRange")
     @Consumes(MediaType.APPLICATION_JSON)

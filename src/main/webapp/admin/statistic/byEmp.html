@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Statistics</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+
+        p {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Order Statistics by Employee and Date Range</h1>
+
+<label for="employee">Employee:</label>
+<input type="text" id="employee" list="employeeList" data-id="">
+<datalist id="employeeList"></datalist>
+
+<label for="startDate">Start Date:</label>
+<input type="date" id="startDate" name="startDate">
+
+<label for="endDate">End Date:</label>
+<input type="date" id="endDate" name="endDate">
+
+<button onclick="getOrderStatistics()">Get Statistics</button>
+
+<div id="result"></div>
+
+<script>
+    function initializeForm() {
+        fetchAndPopulateData('http://localhost:8080/api/employee/all', 'employeeList', 'id', 'fullname');
+    }
+
+    function fetchAndPopulateData(url, elementId, valueProperty, textProperty) {
+        fetch(url)
+            .then(response => response.json())
+            .then(data => populateDatalist(data, elementId, valueProperty, textProperty))
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+    function populateDatalist(data, elementId, valueProperty, textProperty) {
+        const datalist = document.getElementById(elementId);
+        datalist.innerHTML = '';
+
+        const inputElement = document.getElementById('employee');
+        inputElement.value = '';
+
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item[textProperty];
+            option.setAttribute('data-id', item[valueProperty]);
+            datalist.appendChild(option);
+        });
+    }
+
+    function getOrderStatistics() {
+        const inputElement = document.getElementById('employee');
+        const selectedOption = document.querySelector('#employeeList option[value="' + inputElement.value + '"]');
+        const employeeId = selectedOption ? selectedOption.getAttribute('data-id') : '';
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+
+        if (!employeeId || !startDate || !endDate) {
+            alert('Please enter Employee, Start Date, and End Date.');
+            return;
+        }
+
+        fetch(`http://localhost:8080/api/orders/statisticsByEmployeeAndDateRange?employeeId=${employeeId}&startDate=${startDate}&endDate=${endDate}`)
+            .then(response => response.json())
+            .then(data => displayStatistics(data))
+            .catch(error => console.error('Error:', error));
+    }
+
+    function displayStatistics(data) {
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = '';
+
+        if (!data || data.length === 0) {
+            resultDiv.innerHTML = '<p>No statistics available for the selected criteria.</p>';
+            return;
+        }
+
+        const table = document.createElement('table');
+        const headerRow = table.insertRow(0);
+        const columnNames = ['Name', 'Order Count', 'Total Amount'];
+
+        for (const columnName of columnNames) {
+            const headerCell = headerRow.insertCell(-1);
+            headerCell.textContent = columnName;
+        }
+
+        data.forEach((item, index) => {
+            const row = table.insertRow(index + 1);
+
+            if (Array.isArray(item) && item.length >= 3) {
+                for (let i = 0; i < 3; i++) {
+                    const cell = row.insertCell(-1);
+                    cell.textContent = item[i];
+                }
+            }
+        });
+
+        resultDiv.appendChild(table);
+    }
+
+    initializeForm();
+</script>
+
+</body>
+</html>

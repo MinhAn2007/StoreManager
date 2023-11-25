@@ -52,5 +52,7 @@ public class OrderService {
     public List<Object[]> getOrderStatisticsByDateRange(LocalDate startDate, LocalDate endDate) {
         return repo.getOrderStatisticsByDateRange(startDate, endDate);
     }
-
+    public List<Object[]> getOrderStatisticsByEmployeeAndDateRange(Long employeeId, LocalDate startDate, LocalDate endDate) {
+        return repo.getOrderStatisticsByEmployeeAndDateRange(employeeId,startDate,endDate);
+    }
 }

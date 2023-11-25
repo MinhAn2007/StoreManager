@@ -177,6 +177,34 @@ public class OrderRepository {
         }
         return null;
     }
+
+    public List<Object[]> getOrderStatisticsByEmployeeAndDateRange(Long employeeId, LocalDate startDate, LocalDate endDate) {
+        try {
+            trans.begin();
+            String queryString = "SELECT e.fullname AS employeeName, COUNT(o) AS orderCount, " +
+                    "SUM(od.price * od.quantity) AS totalAmount " +
+                    "FROM Order o " +
+                    "JOIN o.employee e " +
+                    "JOIN o.orderDetails od " +
+                    "WHERE e.id = :employeeId " +
+                    "AND FUNCTION('DATE', o.orderDate) BETWEEN :startDate AND :endDate " +
+                    "GROUP BY employeeName " +
+                    "ORDER BY employeeName";
+
+            List<Object[]> result = em.createQuery(queryString)
+                    .setParameter("employeeId", employeeId)
+                    .setParameter("startDate", startDate)
+                    .setParameter("endDate", endDate)
+                    .getResultList();
+
+            trans.commit();
+            return result;
+        } catch (Exception e) {
+            logger.error("Error retrieving order statistics by employee and date range: " + e.getMessage());
+            trans.rollback();
+        }
+        return null;
+    }
 }
 
 
