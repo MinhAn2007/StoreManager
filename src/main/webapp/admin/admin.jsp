@@ -4,74 +4,54 @@
     <title>ADMIN</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            font-family: Arial, sans-serif;
             margin: 0;
-        }
-
-        ul.menu {
-            list-style: none;
             padding: 0;
-            background-color: #333;
-            display: flex;
-            margin-bottom: 20px;
         }
 
-        ul.menu li {
+        .menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu li {
             display: inline-block;
-            margin-right: 20px;
             position: relative;
         }
 
-        ul.menu li a {
+        .menu a {
+            display: block;
+            padding: 10px 15px;
             text-decoration: none;
-            color: #fff;
-            padding: 15px;
-            display: block;
-            transition: all 0.3s ease;
+            color: #333;
         }
 
-        ul.menu li a:hover {
-            text-decoration: underline;
-            background-color: #555;
-        }
-
-        ul.menu li:hover ul.submenu {
-            display: block;
-        }
-
-        ul.submenu {
+        .menu ul.submenu {
             display: none;
             position: absolute;
-            background-color: #333;
-            padding: 10px;
-            list-style: none;
-            border: 1px solid #fff;
-            width: 120px;
+            top: 100%;
+            left: 0;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            z-index: 1;
         }
 
-        ul.submenu li {
-            margin-right: 0;
-        }
-
-        ul.submenu li a {
-            padding: 8px;
-        }
-
-        a.home-link {
-            text-decoration: none;
-            color: #fff;
-            padding: 15px;
+        .menu li:hover > ul.submenu {
             display: block;
-            transition: all 0.3s ease;
         }
 
-        a.home-link:hover {
-            text-decoration: underline;
-            background-color: #555;
+        .home-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        .menu a:hover,
+        .home-link:hover {
+            background-color: #ddd;
         }
 
     </style>
