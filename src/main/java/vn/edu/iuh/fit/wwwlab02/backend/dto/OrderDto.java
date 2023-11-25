@@ -19,10 +19,11 @@ public class OrderDto {
     private String customerName;
     private String note;
     private long productId;
+    private String productName;
     private double quantity;
     private double price;
 
-    public OrderDto(long orderId, LocalDateTime orderDate, long cusId, long enoId, String employeeName, String customerName, String note, long productId, double quantity, double price) {
+    public OrderDto(long orderId, LocalDateTime orderDate, long cusId, long enoId, String employeeName, String customerName, String note, long productId, String productName, double quantity, double price) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.cusId = cusId;
@@ -31,6 +32,7 @@ public class OrderDto {
         this.customerName = customerName;
         this.note = note;
         this.productId = productId;
+        this.productName = productName;
         this.quantity = quantity;
         this.price = price;
     }
@@ -100,6 +102,14 @@ public class OrderDto {
 
     public void setProductId(long productId) {
         this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public double getQuantity() {

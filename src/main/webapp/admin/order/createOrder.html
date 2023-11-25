@@ -5,7 +5,68 @@
     <meta charset="UTF-8">
     <title>Order Form</title>
     <style>
-        /* Your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        button {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        button {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -87,6 +148,13 @@
         const quantity = document.getElementById('quantity').value;
         const note = document.getElementById('note').value;
 
+        if (!productId) {
+            alert('Please select a product before adding to the cart.');
+            return;
+        }
+
+        const name = document.getElementById('product').value; // Get the product name directly from the input field
+
         const selectedEmployee = document.querySelector(`#employeeList option[value="${employeeId}"]`);
         const selectedCustomer = document.querySelector(`#customerList option[value="${customerId}"]`);
         const selectedProduct = document.querySelector(`#productList option[value="${productId}"]`);
@@ -95,7 +163,6 @@
         const cusId = selectedCustomer ? selectedCustomer.getAttribute('data-id') : null;
         const proId = selectedProduct ? selectedProduct.getAttribute('data-id') : null;
 
-        // Fetch product price
         fetch(`http://localhost:8080/api/productPrices/last/${proId}`)
             .then(response => response.json())
             .then(priceData => {
@@ -106,7 +173,8 @@
                     note: note,
                     price: priceData,
                     productId: proId,
-                    quantity: quantity
+                    quantity: quantity,
+                    name: name
                 };
 
                 cart.push(item);
@@ -118,13 +186,15 @@
                 alert('An error occurred while fetching the product price. Please try again.');
             });
     }
+
+
     function updateCartTable() {
         const cartBody = document.getElementById('cartBody');
         cartBody.innerHTML = '';
 
         cart.forEach(item => {
             const row = cartBody.insertRow();
-            row.insertCell(0).innerText = item.productId;
+            row.insertCell(0).innerText = item.name;
             row.insertCell(1).innerText = item.quantity;
             const deleteButton = document.createElement('button');
             deleteButton.innerText = 'Remove';
@@ -166,7 +236,7 @@
                 }
             })
             .then(data => {
-                console.log('Order submitted successfully:', data);
+                alert('Order submitted successfully');
                 cart = [];
                 updateCartTable();
                 clearForm();

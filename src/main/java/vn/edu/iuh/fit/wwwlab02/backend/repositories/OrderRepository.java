@@ -59,20 +59,25 @@ public class OrderRepository {
     }
 
     public boolean deleteOrders(long id) {
-        Optional<Order> op = findOrder(id);
-        Order orders = op.isPresent() ? op.get() : null;
-        if (orders == null) return false;
         try {
             trans.begin();
-            em.remove(orders);
-            trans.commit();
-            return true;
+            Optional<Order> op = findOrder(id);
+            if (op.isPresent()) {
+                Order order = op.get();
+                order.getOrderDetails().get(0).setNote("DELETED");
+                em.merge(order);
+                trans.commit();
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             logger.info(e.getMessage());
             trans.rollback();
+            return false;
         }
-        return false;
     }
+
 
     public List<Order> getAllOrders() {
         try {
@@ -91,25 +96,24 @@ public class OrderRepository {
         try {
             trans.begin();
 
-            // Use proper aliasing in your query to make it more readable
-            List<Order> list = em.createQuery("select o from Order o join o.orderDetails od", Order.class)
+            List<Order> list = em.createQuery("select distinct o from Order o join o.orderDetails od order by o.order_id asc ", Order.class)
                     .getResultList();
 
             List<OrderDto> orderDtoList = new ArrayList<>();
 
             for (Order order : list) {
                 OrderDto orderDto = new OrderDto();
-                orderDto.setOrderId(order.getOrder_id()); // Assuming you have a method getOrderId() in your Order class
+                orderDto.setOrderId(order.getOrder_id());
                 orderDto.setOrderDate(order.getOrderDate());
                 orderDto.setNote(order.getOrderDetails().get(0).getNote());
-
-                orderDto.setCusId(order.getCustomer().getId()); // Assuming you have a method getCustomerId() in your Customer class
-                orderDto.setEnoId(order.getEmployee().getId()); // Assuming you have a method getEmployeeId() in your Employee class
+                orderDto.setCusId(order.getCustomer().getId());
+                orderDto.setEnoId(order.getEmployee().getId());
                 orderDto.setEmployeeName(order.getEmployee().getFullname());
                 orderDto.setCustomerName(order.getCustomer().getName());
 
                 OrderDetail orderDetail = order.getOrderDetails().get(0);
-                orderDto.setProductId(orderDetail.getProduct().getProduct_id()); // Assuming you have a method getProductId() in your Product class
+                orderDto.setProductId(orderDetail.getProduct().getProduct_id());
+                orderDto.setProductName(orderDetail.getProduct().getName());
                 orderDto.setQuantity(orderDetail.getQuantity());
                 orderDto.setPrice(orderDetail.getPrice());
 
