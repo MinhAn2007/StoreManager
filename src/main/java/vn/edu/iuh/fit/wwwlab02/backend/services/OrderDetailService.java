@@ -1,5 +1,7 @@
 package vn.edu.iuh.fit.wwwlab02.backend.services;
 
+import vn.edu.iuh.fit.wwwlab02.backend.entities.Order;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 import vn.edu.iuh.fit.wwwlab02.backend.repositories.OrderDetailsRepository;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail;
 
@@ -24,6 +26,7 @@ public class OrderDetailService {
     public List<OrderDetail> findOrderDetail(long OrderID) {
         return repo.findOrderDetail(OrderID);
     }
+    public Optional<OrderDetail> findOrderDetailByOrderAndProduct(Order order, Product product) {return repo.findOrderDetailByOrderAndProduct(order,product);}
 
 
 

@@ -3,6 +3,7 @@ package vn.edu.iuh.fit.wwwlab02.backend.services;
 import vn.edu.iuh.fit.wwwlab02.backend.dto.OrderDto;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Order;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 import vn.edu.iuh.fit.wwwlab02.backend.repositories.OrderRepository;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class OrderService {
     public Optional<Order> findOrder(long id) {return repo.findOrder(id);}
     public boolean deleteOrders(long id) {return repo.deleteOrders(id);}
     public List<Order> getAllOrders() {return repo.getAllOrders();}
+    public Order findOrderByCustomerAndEmployee(long cusId,long empId) {return repo.findOrderByCustomerAndEmployee(cusId,empId);}
 
     public List<OrderDto> getInfoOrder(){return  repo.getInfoOrder();}
 

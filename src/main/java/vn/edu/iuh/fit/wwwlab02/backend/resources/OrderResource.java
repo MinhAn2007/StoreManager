@@ -6,13 +6,11 @@ import jakarta.ws.rs.core.Response;
 import vn.edu.iuh.fit.wwwlab02.backend.dto.OrderDto;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Order;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail;
-import vn.edu.iuh.fit.wwwlab02.backend.services.CustomerService;
-import vn.edu.iuh.fit.wwwlab02.backend.services.EmployeeService;
-import vn.edu.iuh.fit.wwwlab02.backend.services.OrderService;
-import vn.edu.iuh.fit.wwwlab02.backend.services.ProductService;
+import vn.edu.iuh.fit.wwwlab02.backend.services.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/orders")
 public class OrderResource {
@@ -20,6 +18,8 @@ public class OrderResource {
     private final CustomerService customerService = new CustomerService();
     private final EmployeeService employeeService = new EmployeeService();
     private final ProductService productService = new ProductService();
+
+    private final OrderDetailService orderDetailService = new OrderDetailService();
 
     public OrderResource() {
     }
@@ -59,24 +59,45 @@ public class OrderResource {
         List<OrderDetail> orderDetails = new ArrayList<>();
 
         for (OrderDto orderDto : orderDtos) {
-            Order order = new Order();
-            OrderDetail orderDetail = new OrderDetail();
-            order.setOrderDate(orderDto.getOrderDate());
-            order.setCustomer(customerService.findCus(orderDto.getCusId()).orElse(null));
-            order.setEmployee(employeeService.findEmployee(orderDto.getEnoId()).orElse(null));
-            orderDetail.setNote(orderDto.getNote());
-            orderDetail.setPrice(orderDto.getPrice());
-            orderDetail.setQuantity(orderDto.getQuantity());
-            orderDetail.setProduct(productService.findProduct(orderDto.getProductId()).orElse(null));
-            orderDetail.setOrder(order);
-            orders.add(order);
-            orderDetails.add(orderDetail);
-            orderService.insertOrder(order ,orderDetail);
+            Order existingOrder = orderService.findOrderByCustomerAndEmployee(orderDto.getCusId(), orderDto.getEnoId());
 
+            if (existingOrder == null) {
+                Order order = new Order();
+                OrderDetail orderDetail = new OrderDetail();
+                order.setOrderDate(orderDto.getOrderDate());
+                order.setCustomer(customerService.findCus(orderDto.getCusId()).orElse(null));
+                order.setEmployee(employeeService.findEmployee(orderDto.getEnoId()).orElse(null));
+                orderDetail.setNote(orderDto.getNote());
+                orderDetail.setPrice(orderDto.getPrice());
+                orderDetail.setQuantity(orderDto.getQuantity());
+                orderDetail.setProduct(productService.findProduct(orderDto.getProductId()).orElse(null));
+                orderDetail.setOrder(order);
+                orders.add(order);
+                orderDetails.add(orderDetail);
+                orderService.insertOrder(order, orderDetail);
+            } else {
+                Optional<OrderDetail> orderDetailOptional = orderDetailService.findOrderDetailByOrderAndProduct(existingOrder, productService.findProduct(orderDto.getProductId()).orElse(null));
+
+                if (orderDetailOptional.isPresent()) {
+                    OrderDetail orderDetail = orderDetailOptional.get();
+                } else {
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setNote(orderDto.getNote());
+                    orderDetail.setPrice(orderDto.getPrice());
+                    orderDetail.setQuantity(orderDto.getQuantity());
+                    orderDetail.setProduct(productService.findProduct(orderDto.getProductId()).orElse(null));
+                    orderDetail.setOrder(existingOrder);
+                    orderDetails.add(orderDetail);
+                    orderDetailService.insertOrderDetail(orderDetail);
+                }
+            }
         }
 
         return Response.ok(orders).build();
     }
+
+
+
 
 
     @PUT

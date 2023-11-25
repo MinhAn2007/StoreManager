@@ -29,6 +29,7 @@ public class OrderRepository {
             trans.begin();
             em.persist(orders);
             em.persist(orderDetail);
+            em.flush();
             trans.commit();
             return true;
         } catch (Exception e) {
@@ -91,6 +92,19 @@ public class OrderRepository {
         }
         return null;
     }
+    public Order findOrderByCustomerAndEmployee(Long customerId, Long employeeId) {
+        try {
+            String queryString = "SELECT o FROM Order o WHERE o.customer.id = :customerId AND o.employee.id = :employeeId";
+            TypedQuery<Order> query = em.createQuery(queryString, Order.class);
+            query.setParameter("customerId", customerId);
+            query.setParameter("employeeId", employeeId);
+            return query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e) {
+            return null;
+        }
+    }
+
+
 
     public List<OrderDto> getInfoOrder() {
         try {

@@ -3,6 +3,7 @@ package vn.edu.iuh.fit.wwwlab02.backend.repositories;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.Order;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 import vn.edu.iuh.fit.wwwlab02.backend.enums.ProductStatus;
@@ -84,6 +85,16 @@ public class OrderDetailsRepository {
         }
         return null;
     }
-
+    public Optional<OrderDetail> findOrderDetailByOrderAndProduct(Order order, Product product) {
+        try {
+            String queryString = "SELECT od FROM OrderDetail od WHERE od.order = :order AND od.product = :product";
+            TypedQuery<OrderDetail> query = em.createQuery(queryString, OrderDetail.class);
+            query.setParameter("order", order);
+            query.setParameter("product", product);
+            return Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException | NonUniqueResultException e) {
+            return Optional.empty();
+        }
+    }
 
 }
