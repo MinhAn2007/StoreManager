@@ -11,6 +11,7 @@
     <title>Title</title>
 </head>
 <body>
+    <H1>How are you ?</H1>
     <a href="admin/admin.jsp">ADMIN</a>
     <a href="customer/productList.html">CUSTOMER</a>
 </body>

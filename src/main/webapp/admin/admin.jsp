@@ -58,6 +58,13 @@
     </li>
 </ul>
 <a href="http://localhost:8080/">HOME</a>
-<a href="statistic/byDate.html">Statistics </a>
-</body>
+<ul class="menu">
+    <li>
+        <a href="#">Statistics</a>
+        <ul class="submenu">
+            <li><a href="statistic/byDate.html">List Customer</a></li>
+            <li><a href="statistic/byRange.html">List Customer</a></li>
+        </ul>
+    </li>
+</ul></body>
 </html>
