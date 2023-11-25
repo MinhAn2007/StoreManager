@@ -16,12 +16,10 @@
 
 
 -- Dumping database structure for lab02
-DROP DATABASE IF EXISTS `lab02`;
 CREATE DATABASE IF NOT EXISTS `lab02` /*!40100 DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci */;
 USE `lab02`;
 
 -- Dumping structure for table lab02.customer
-DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
   `cust_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `address` varchar(250) NOT NULL,
@@ -52,7 +50,6 @@ INSERT INTO `customer` (`cust_id`, `address`, `email`, `cust_name`, `phone`) VAL
 	(22, '21', 'minh123123an200702@gmail.com', 'bbbbb', '212121');
 
 -- Dumping structure for table lab02.employee
-DROP TABLE IF EXISTS `employee`;
 CREATE TABLE IF NOT EXISTS `employee` (
   `emp_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `address` varchar(250) NOT NULL,
@@ -79,7 +76,6 @@ INSERT INTO `employee` (`emp_id`, `address`, `dob`, `email`, `full_name`, `phone
 	(10, '123 Fir St', '1996-11-20', 'mary@example.com', 'Mary Davis', '333-222-1111', 1);
 
 -- Dumping structure for table lab02.orders
-DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `order_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `order_date` datetime(6) NOT NULL,
@@ -126,7 +122,6 @@ INSERT INTO `orders` (`order_id`, `order_date`, `cust_id`, `employee_id`) VALUES
 	(30, '2023-10-27 03:00:29.000000', 5, 7);
 
 -- Dumping structure for table lab02.order_detail
-DROP TABLE IF EXISTS `order_detail`;
 CREATE TABLE IF NOT EXISTS `order_detail` (
   `note` varchar(255) DEFAULT NULL,
   `price` double NOT NULL,
@@ -139,8 +134,9 @@ CREATE TABLE IF NOT EXISTS `order_detail` (
   CONSTRAINT `FK_order_detail_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table lab02.order_detail: ~11 rows (approximately)
+-- Dumping data for table lab02.order_detail: ~20 rows (approximately)
 INSERT INTO `order_detail` (`note`, `price`, `quantity`, `order_id`, `product_id`) VALUES
+	('Gia  sp gan naht', 25.01, 1, 2, 1),
 	('Gia  sp gan naht', 25.01, 1, 3, 1),
 	('Gia  sp gan naht', 18.61, 1, 3, 2),
 	('Gia  sp gan naht', 48, 1, 3, 3),
@@ -151,10 +147,17 @@ INSERT INTO `order_detail` (`note`, `price`, `quantity`, `order_id`, `product_id
 	('Gia  sp gan naht', 26.46, 1, 3, 8),
 	('Gia  sp gan naht', 34.9, 1, 3, 9),
 	('Gia  sp gan naht', 68.58, 1, 3, 10),
-	('Gia sp gan nhat', 18.61, 1, 4, 1);
+	('Gia sp gan nhat', 18.61, 1, 4, 1),
+	('Gia  sp gan naht', 48, 1, 4, 4),
+	('Gia  sp gan naht', 16.72, 7, 5, 6),
+	('Gia  sp gan naht', 98.48, 8, 6, 7),
+	('Gia  sp gan naht', 26.46, 9, 7, 8),
+	('Gia  sp gan naht', 34.9, 10, 7, 9),
+	('Gia  sp gan naht', 63.34, 6, 8, 5),
+	('Gia  sp gan naht', 68.58, 1, 8, 10),
+	('Gia  sp gan naht', 58.28, 5, 9, 4);
 
 -- Dumping structure for table lab02.product
-DROP TABLE IF EXISTS `product`;
 CREATE TABLE IF NOT EXISTS `product` (
   `product_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `description` text DEFAULT NULL,
@@ -167,19 +170,18 @@ CREATE TABLE IF NOT EXISTS `product` (
 
 -- Dumping data for table lab02.product: ~10 rows (approximately)
 INSERT INTO `product` (`product_id`, `description`, `manufacturer_name`, `name`, `status`, `unit`) VALUES
-	(1, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'HTC111', 'iPhone SE (2nd gen)', -1, 'piece'),
-	(2, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'HTC', 'iPhone 13', 1, 'piece'),
-	(3, 'bbbbbbbbbbbbbbbbbbbbb', 'Panasonic', 'iPhone 12 Pro Max', 1, 'piece'),
-	(4, 'ccccccccccccccccccccccccc', 'BlackBerry', 'Google Pixel XL', 1, 'piece'),
-	(5, 'cqqqqqqqqqqqqqqqqq', 'OnePlus', 'Xiaomi Mi 8 SE', 1, 'piece'),
-	(6, 'sdfffffffsdfsdfs', 'Panasonic', 'iPhone 11 Pro', 1, 'piece'),
-	(7, 'sdfsdfsdfsdfs', 'Oppo', 'Huawei P20', 1, 'piece'),
-	(8, 'fsdfsdfsdfsdfs', 'Samsung', 'Xiaomi Mi 8 Lite', 1, 'piece'),
-	(9, 'sdfsdfsdfsdfsdfsdf', 'Plum', 'OnePlus 3T', 1, 'piece'),
-	(10, 'sdfsdfsdfsdfsdfsdf', 'Plum', 'Samsung Galaxy S3 Mini', 1, 'piece');
+	(1, 'HTC111 manufacturer_name', 'HTC111', 'iPhone SE (2nd gen)', -1, 'piece'),
+	(2, 'HTC manufacturer_name', 'HTC', 'iPhone 13', 1, 'piece'),
+	(3, 'Panasonic manufacturer_name', 'Panasonic', 'iPhone 12 Pro Max', 1, 'piece'),
+	(4, 'BlackBerry manufacturer_name', 'BlackBerry', 'Google Pixel XL', 1, 'piece'),
+	(5, 'OnePlus manufacturer_name', 'OnePlus', 'Xiaomi Mi 8 SE', 1, 'piece'),
+	(6, 'Panasonic manufacturer_name', 'Panasonic', 'iPhone 11 Pro', 1, 'piece'),
+	(7, 'Panasonic manufacturer_name', 'Oppo', 'Huawei P20', 1, 'piece'),
+	(8, 'Samsung manufacturer_name', 'Samsung', 'Xiaomi Mi 8 Lite', 1, 'piece'),
+	(9, 'Plum manufacturer_name', 'Plum', 'OnePlus 3T', 1, 'piece'),
+	(10, 'Plum manufacturer_name', 'Plum', 'Samsung Galaxy S3 Mini', 1, 'piece');
 
 -- Dumping structure for table lab02.product_image
-DROP TABLE IF EXISTS `product_image`;
 CREATE TABLE IF NOT EXISTS `product_image` (
   `image_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `alternative` varchar(250) DEFAULT NULL,
@@ -204,7 +206,6 @@ INSERT INTO `product_image` (`image_id`, `alternative`, `path`, `product_id`) VA
 	(10, 'Alternative 10', 'https://i.pinimg.com/236x/fe/7a/f5/fe7af5d2a7be8587c27d5db1d91494a6.jpg', 10);
 
 -- Dumping structure for table lab02.product_price
-DROP TABLE IF EXISTS `product_price`;
 CREATE TABLE IF NOT EXISTS `product_price` (
   `price_date_time` datetime(6) NOT NULL,
   `note` varchar(255) DEFAULT NULL,
