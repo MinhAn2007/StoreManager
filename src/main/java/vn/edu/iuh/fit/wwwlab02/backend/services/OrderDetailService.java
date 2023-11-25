@@ -21,13 +21,11 @@ public class OrderDetailService {
         return repo.updateOrderDetail(orderDetail);
     }
 
-    public Optional<OrderDetail> findOrderDetail(long OrderID, long ProductID) {
-        return repo.findOrderDetail(OrderID, ProductID);
+    public List<OrderDetail> findOrderDetail(long OrderID) {
+        return repo.findOrderDetail(OrderID);
     }
 
-    public boolean deleteOrderDetail(long OrderID, long ProductID) {
-        return repo.deleteOrderDetail(OrderID, ProductID);
-    }
+
 
     public List<OrderDetail> getAllOrderDetails() {
         return repo.getAllOrderDetails();

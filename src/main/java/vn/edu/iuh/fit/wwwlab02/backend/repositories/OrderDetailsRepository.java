@@ -1,13 +1,13 @@
 package vn.edu.iuh.fit.wwwlab02.backend.repositories;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail;
+import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
+import vn.edu.iuh.fit.wwwlab02.backend.enums.ProductStatus;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,27 +48,21 @@ public class OrderDetailsRepository {
         return false;
     }
 
-    public Optional<OrderDetail> findOrderDetail(long OrderID, long ProductID) {
-        OrderDetail orderDetail = (OrderDetail) em.createNativeQuery("Select od from order_detail od where od.order_id = " + OrderID + " and od.product_id = " + ProductID + " ", OrderDetail.class).getSingleResult();
-        return orderDetail == null ? Optional.empty() : Optional.of(orderDetail);
-
-    }
-
-    public boolean deleteOrderDetail(long OrderID, long ProductID) {
-        Optional<OrderDetail> op = findOrderDetail(OrderID, ProductID);
-        OrderDetail orderDetail = op.isPresent() ? op.get() : null;
-        if (orderDetail == null) return false;
-        try {
+    public List<OrderDetail> findOrderDetail(long OrderID) {
+        try{
             trans.begin();
-            em.remove(orderDetail);
+            List<OrderDetail> list= em.createQuery("select od from OrderDetail od where od.order.order_id =:OrderID",OrderDetail.class).setParameter("OrderID",OrderID).getResultList();
             trans.commit();
-            return true;
-        } catch (Exception e) {
+            return list;
+        }catch (Exception e){
             logger.info(e.getMessage());
             trans.rollback();
         }
-        return false;
+        return null;
     }
+
+
+
     public List<OrderDetail> getAllOrderDetails() {
         try {
             trans.begin();
