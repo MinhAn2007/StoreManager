@@ -9,6 +9,7 @@ import vn.edu.iuh.fit.wwwlab02.backend.entities.Order;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.Product;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class OrderRepository {
         trans = em.getTransaction();
     }
 
-    public boolean insertOrder(Order orders , OrderDetail orderDetail) {
+    public boolean insertOrder(Order orders, OrderDetail orderDetail) {
         try {
             trans.begin();
             em.persist(orders);
@@ -92,6 +93,7 @@ public class OrderRepository {
         }
         return null;
     }
+
     public Order findOrderByCustomerAndEmployee(Long customerId, Long employeeId) {
         try {
             String queryString = "SELECT o FROM Order o WHERE o.customer.id = :customerId AND o.employee.id = :employeeId";
@@ -105,13 +107,11 @@ public class OrderRepository {
     }
 
 
-
     public List<OrderDto> getInfoOrder() {
         try {
             trans.begin();
 
-            List<Order> list = em.createQuery("select distinct o from Order o join o.orderDetails od order by o.order_id asc ", Order.class)
-                    .getResultList();
+            List<Order> list = em.createQuery("select distinct o from Order o join o.orderDetails od order by o.order_id asc ", Order.class).getResultList();
 
             List<OrderDto> orderDtoList = new ArrayList<>();
 
@@ -143,4 +143,40 @@ public class OrderRepository {
         return null;
     }
 
+
+    public List<Object[]> getOrderStatisticsByDay() {
+        try {
+            trans.begin();
+
+            String queryString = "SELECT FUNCTION('DATE', o.orderDate) AS orderDay, COUNT(o) AS orderCount, SUM(od.price * od.quantity) AS totalAmount " + "FROM Order o JOIN o.orderDetails od " + "GROUP BY orderDay " + "ORDER BY FUNCTION('DATE', o.orderDate)";
+
+            List<Object[]> result = em.createQuery(queryString).getResultList();
+
+            trans.commit();
+            return result;
+        } catch (Exception e) {
+            logger.error("Error retrieving order statistics by day: " + e.getMessage());
+            trans.rollback();
+        }
+        return null;
+    }
+
+    public List<Object[]> getOrderStatisticsByDateRange(LocalDate startDate, LocalDate endDate) {
+        try {
+            trans.begin();
+
+            String queryString = "SELECT FUNCTION('DATE', o.orderDate) AS orderDay, COUNT(o) AS orderCount, SUM(od.price * od.quantity) AS totalAmount " + "FROM Order o JOIN o.orderDetails od " + "WHERE FUNCTION('DATE', o.orderDate) BETWEEN :startDate AND :endDate " + "GROUP BY orderDay " + "ORDER BY FUNCTION('DATE', o.orderDate)";
+
+            List<Object[]> result = em.createQuery(queryString).setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
+
+            trans.commit();
+            return result;
+        } catch (Exception e) {
+            logger.error("Error retrieving order statistics by date range: " + e.getMessage());
+            trans.rollback();
+        }
+        return null;
+    }
 }
+
+

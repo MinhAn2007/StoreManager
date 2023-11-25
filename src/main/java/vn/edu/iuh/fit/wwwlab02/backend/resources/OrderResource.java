@@ -8,6 +8,7 @@ import vn.edu.iuh.fit.wwwlab02.backend.entities.Order;
 import vn.edu.iuh.fit.wwwlab02.backend.entities.OrderDetail;
 import vn.edu.iuh.fit.wwwlab02.backend.services.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -97,7 +98,40 @@ public class OrderResource {
     }
 
 
+    @GET
+    @Path("/statisticsByDay")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderStatisticsByDay() {
+        try {
+            List<Object[]> result = orderService.getOrderStatisticsByDay();
+            return Response.ok(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error retrieving order statistics by day: " + e.getMessage())
+                    .build();
+        }
+    }
 
+    @GET
+    @Path("/statisticsByDateRange")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderStatisticsByDateRange(
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate) {
+        try {
+            LocalDate startLocalDate = LocalDate.parse(startDate);
+            LocalDate endLocalDate = LocalDate.parse(endDate);
+
+            List<Object[]> result = orderService.getOrderStatisticsByDateRange(startLocalDate, endLocalDate);
+            return Response.ok(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error retrieving order statistics by date range: " + e.getMessage())
+                    .build();
+        }
+    }
 
 
     @PUT
