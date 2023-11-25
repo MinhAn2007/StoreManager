@@ -111,7 +111,8 @@ public class OrderRepository {
         try {
             trans.begin();
 
-            List<Order> list = em.createQuery("select distinct o from Order o join o.orderDetails od order by o.order_id asc ", Order.class).getResultList();
+            List<Order> list = em.createQuery("select distinct o from Order o join o.orderDetails od order by o.order_id asc ", Order.class)
+                    .getResultList();
 
             List<OrderDto> orderDtoList = new ArrayList<>();
 

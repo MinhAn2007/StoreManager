@@ -4,10 +4,26 @@
     <meta charset="UTF-8">
     <title>Product Details</title>
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        #productImages, #productPrices {
+            margin-top: 20px;
+        }
+
+        #imageDetails {
+            margin-bottom: 20px;
+        }
+
         table {
             border-collapse: collapse;
             width: 50%;
-            margin-top: 20px;
         }
 
         table, th, td {
@@ -19,14 +35,32 @@
             text-align: left;
         }
 
-        h2 {
-            margin-bottom: 10px;
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #backButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #backButton:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
 
 <h2>Product Details</h2>
+
+<!-- Back Button -->
+<button id="backButton" onclick="goBack()">Back</button>
 
 <div id="productImages">
     <h3>Product Images</h3>
@@ -55,22 +89,31 @@
 
 <script>
     function displayImages(images) {
-            document.getElementById('image_id').innerText = images.image_id;
-            document.getElementById('path').src = images.path;
-            document.getElementById('alternative').innerText = images.alternative;
-
+        document.getElementById('image_id').innerText = images.image_id;
+        document.getElementById('path').src = images.path;
+        document.getElementById('alternative').innerText = images.alternative;
     }
 
+    function formatArrayDate(dateArray) {
+        const date = new Date(...dateArray);
+        const formattedDate = date.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        });
+        return formattedDate;
+    }
 
     function displayPrices(prices) {
         prices.sort((a, b) => new Date(b.price_date_time) - new Date(a.price_date_time));
-
         const priceTableBody = document.getElementById('priceTableBody');
         priceTableBody.innerHTML = '';
-
         prices.forEach(price => {
             const row = priceTableBody.insertRow();
-            row.insertCell(0).innerText = price.price_date_time;
+            row.insertCell(0).innerText = formatArrayDate(price.price_date_time);
             row.insertCell(1).innerText = price.price.toFixed(2);
             row.insertCell(2).innerText = price.note;
         });
@@ -95,6 +138,9 @@
         fetchProductDetails(productId);
     } else {
         console.error('Product ID not provided in the URL');
+    }
+    function goBack() {
+        window.history.back();
     }
 </script>
 
