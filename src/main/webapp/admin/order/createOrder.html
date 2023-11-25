@@ -95,28 +95,36 @@
         const cusId = selectedCustomer ? selectedCustomer.getAttribute('data-id') : null;
         const proId = selectedProduct ? selectedProduct.getAttribute('data-id') : null;
 
-        const item = {
-            cusId: cusId,
-            orderDate: new Date().toISOString(),
-            enoId: enoId,
-            note: note,
-            price: 0.0,
-            productId: proId,
-            quantity: quantity
-        };
+        // Fetch product price
+        fetch(`http://localhost:8080/api/productPrices/last/${proId}`)
+            .then(response => response.json())
+            .then(priceData => {
+                const item = {
+                    cusId: cusId,
+                    orderDate: new Date().toISOString(),
+                    enoId: enoId,
+                    note: note,
+                    price: priceData,
+                    productId: proId,
+                    quantity: quantity
+                };
 
-        cart.push(item);
-        updateCartTable();
-        clearForm();
+                cart.push(item);
+                updateCartTable();
+                clearForm();
+            })
+            .catch(error => {
+                console.error('Error fetching product price:', error);
+                alert('An error occurred while fetching the product price. Please try again.');
+            });
     }
-
     function updateCartTable() {
         const cartBody = document.getElementById('cartBody');
         cartBody.innerHTML = '';
 
         cart.forEach(item => {
             const row = cartBody.insertRow();
-            row.insertCell(0).innerText = item.productId; // Assuming you want to display the product id
+            row.insertCell(0).innerText = item.productId;
             row.insertCell(1).innerText = item.quantity;
             const deleteButton = document.createElement('button');
             deleteButton.innerText = 'Remove';
