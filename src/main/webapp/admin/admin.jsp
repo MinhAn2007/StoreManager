@@ -58,5 +58,6 @@
     </li>
 </ul>
 <a href="http://localhost:8080/">HOME</a>
+<a href="statistic/byDate.html">Statistics </a>
 </body>
 </html>
