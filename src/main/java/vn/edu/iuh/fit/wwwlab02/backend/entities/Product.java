@@ -31,7 +31,6 @@ public class Product {
     private String manufacturer;
 
     @Column(name = "status")
-    @Enumerated(EnumType.ORDINAL)
     private ProductStatus status;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
