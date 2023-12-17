@@ -1,4 +1,3 @@
-# WWWLab02
 
 # Mô Tả Ứng Dụng
 
